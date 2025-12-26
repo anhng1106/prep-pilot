@@ -6,6 +6,7 @@ import Link from "next/link";
 import React from "react";
 import LandingPageStats from "./layout/landing-page-stats/LandingPageStats";
 import Testimonials from "./layout/testimonials/Testimonials";
+import Pricing from "./layout/pricing/Pricing";
 
 const Home = () => {
   return (
@@ -68,9 +69,9 @@ const Home = () => {
 
       <Testimonials />
 
-      {/* <Pricing />
+      <Pricing />
 
-      <InterviewProcessCards /> */}
+      {/* <InterviewProcessCards /> */}
     </section>
   );
 };
