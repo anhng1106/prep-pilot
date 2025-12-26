@@ -1,9 +1,5 @@
-import { Button } from "@heroui/button";
+import Home from "@/components/Home";
 
-export default function Home() {
-  return (
-    <div>
-      <Button>Click me</Button>
-    </div>
-  );
+export default function HomePage() {
+  return <Home />;
 }
