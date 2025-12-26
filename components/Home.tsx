@@ -6,6 +6,7 @@ import Link from "next/link";
 import React from "react";
 import LandingPageStats from "./layout/landing-page-stats/LandingPageStats";
 import Testimonials from "./layout/testimonials/Testimonials";
+import InterviewProcessCards from "./layout/interview-process/InterviewProcessCards";
 import Pricing from "./layout/pricing/Pricing";
 
 const Home = () => {
@@ -69,9 +70,8 @@ const Home = () => {
 
       <Testimonials />
 
+      <InterviewProcessCards />
       <Pricing />
-
-      {/* <InterviewProcessCards /> */}
     </section>
   );
 };
