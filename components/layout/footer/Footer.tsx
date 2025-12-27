@@ -43,8 +43,8 @@ export default function Footer() {
           </Link>
         </nav>
         <p className="text-xs text-muted-foreground">
-          &copy; {} {siteConfig?.name} - {siteConfig?.description} All rights
-          reserved. {new Date().getFullYear()}
+          &copy; {} {siteConfig?.name} - {siteConfig?.description}{" "}
+          {new Date().getFullYear()}. All rights reserved.
         </p>
       </div>
     </footer>
