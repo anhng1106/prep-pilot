@@ -19,9 +19,7 @@ const HeaderUser = ({ user }: { user: IUser }) => {
             as="button"
             avatarProps={{
               isBordered: true,
-              src: user?.profilePicture.url
-                ? user?.profilePicture.url
-                : "/images/default_user.png",
+              src: user?.profilePicture?.url ?? "/images/default_user.png",
             }}
             className="transition-transform"
             description={user?.email}

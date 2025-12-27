@@ -20,7 +20,6 @@ import { siteConfig } from "@/config/site";
 import { signOut, useSession } from "next-auth/react";
 import { IUser } from "@/backend/models/user.model";
 import { useState } from "react";
-import { set } from "mongoose";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,7 +28,7 @@ const Navbar = () => {
 
   const user = data?.user as IUser;
 
-  console.log(data);
+  console.log(user);
 
   return (
     <HeroUINavbar
@@ -129,9 +128,7 @@ const Navbar = () => {
           as="button"
           avatarProps={{
             isBordered: true,
-            src: user?.profilePicture.url
-              ? user?.profilePicture.url
-              : "/images/default_user.png",
+            src: user?.profilePicture?.url ?? "/images/default_user.png",
           }}
           className="transition-transform"
           description={user?.email}
