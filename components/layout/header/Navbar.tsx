@@ -20,7 +20,6 @@ import { siteConfig } from "@/config/site";
 import { signOut, useSession } from "next-auth/react";
 import { IUser } from "@/backend/models/user.model";
 import { useState } from "react";
-import { set } from "mongoose";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
