@@ -4,7 +4,7 @@ import React from "react";
 import { Button, Link } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
-export default function HeaderAccouncement() {
+export default function HeaderAnnouncement() {
   return (
     <div className="flex w-full items-center justify-center gap-x-3 border-b-1 border-divider bg-background/[0.15] px-6 py-2 backdrop-blur-xl sm:px-3.5">
       <p className="text-small text-foreground">
