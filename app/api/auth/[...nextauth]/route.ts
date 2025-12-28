@@ -29,7 +29,7 @@ const options = {
         );
 
         if (!isPasswordMatch) {
-          throw new Error("Invalid password");
+          throw new Error("Invalid email or password");
         }
         return user;
       },
