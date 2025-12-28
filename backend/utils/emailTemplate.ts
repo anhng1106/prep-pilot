@@ -450,7 +450,7 @@ export const resetPasswordHTMLTemplate = (
             <tr>
               <td class="email-masthead">
                 <a
-                  href="https://gorental.com"
+                  href="${resetUrl}"
                   class="f-fallback email-masthead_name"
                 >
                   Prep Pilot
