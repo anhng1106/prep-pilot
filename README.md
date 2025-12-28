@@ -160,6 +160,8 @@ Use these if you configured unsigned uploads or want consistent organization.
 | `CLOUDINARY_UPLOAD_FOLDER` | `preppilot/avatars`    | Default folder for uploads.                     |
 | `CLOUDINARY_UPLOAD_PRESET` | `unsigned_preset_name` | Upload preset name (if using unsigned uploads). |
 
+</details>
+
 [↑ Back to Top](#top)
 
 ---
@@ -240,11 +242,16 @@ flowchart TB
 
 ```
 
+</details>
+
 [↑ Back to Top](#top)
 
 ---
 
 ## How It Works
+
+<details>
+<summary>Click to view the project workflow and understand the end-to-end process. </summary>
 
 Prep Pilot is a Next.js interview practice app using NextAuth (Google/GitHub/Credentials), MongoDB, OpenAI, and Cloudinary.
 
@@ -332,11 +339,16 @@ sequenceDiagram
   API-->>N: Display media
 ```
 
+</details>
+
 [↑ Back to Top](#top)
 
 ---
 
 ## Authentication
+
+<details>
+<summary>Click to view the authentication flow — from sign in to secured access.</summary>
 
 Prep Pilot uses **NextAuth** to support multiple sign-in methods:
 
@@ -373,11 +385,16 @@ GITHUB_CLIENT_ID=...
 GITHUB_CLIENT_SECRET=...
 ```
 
+</details>
+
 [↑ Back to Top](#top)
 
 ---
 
 ## AI & Prompting
+
+<details>
+<summary>Click to expand and see how AI is used to generate mock interviews and analyze your answers.</summary>
 
 Prep Pilot uses the OpenAI API to power two core experiences:
 
@@ -431,12 +448,16 @@ AI features can be gated behind a **Stripe monthly subscription**:
 
 - Keep prompt templates versioned so changes do not break the UI.
 - Validate AI responses before saving/rendering (recommended: schema validation).
+</details>
 
 [↑ Back to Top](#top)
 
 ---
 
 ## Media Uploads (Cloudinary)
+
+<details>
+<summary>Click to view how Media Uploads (Cloudinary) setup</summary>
 
 Prep Pilot uses **Cloudinary** to handle media uploads such as user avatars and optional interview-related attachments.
 
@@ -459,9 +480,16 @@ CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 ```
 
+</details>
+
+[↑ Back to Top](#top)
+
 ---
 
 ## Deployment (Vercel)
+
+<details>
+<summary>Click to view how Prep Pilot was deployed on Vercel.</summary>
 
 Prep Pilot is deployed on **Vercel**.
 
@@ -524,12 +552,16 @@ In GitHub Developer Settings → OAuth App:
 - All secrets exist in Vercel (no missing env vars).
 - MongoDB Atlas network access is configured to allow the deployment.
 - Cloudinary and Stripe keys are set for the correct environment (test vs live).
+</details>
 
 [↑ Back to Top](#top)
 
 ---
 
 ## Future Improvements
+
+<details>
+  <summary>Click to explore planned futures coming.</summary>
 
 - **Voice mode**: record answers, transcribe audio, and generate feedback on spoken responses.
 - **Adaptive difficulty**: automatically adjust question difficulty based on user performance and history.
@@ -541,6 +573,7 @@ In GitHub Developer Settings → OAuth App:
 - **Team / classroom mode**: shared libraries of interviews, rubrics, and admin-managed cohorts.
 - **Improved onboarding**: guided setup, role presets, and sample interviews for new users.
 - **Security & reliability**: rate limiting for AI routes, improved error handling, and better logging/monitoring.
+</details>
 
 [↑ Back to Top](#top)
 
@@ -548,6 +581,8 @@ In GitHub Developer Settings → OAuth App:
 
 ## Contributing
 
+<details>
+  <summary>Click to view contribution instruction if you have any new ideas.</summary>
 Contributions are welcome and appreciated!
 
 ### How to Contribute
@@ -600,6 +635,7 @@ If you find a bug or want to request a feature, please open an issue and include
 - Steps to reproduce
 - Expected vs actual behavior
 - Screenshots/logs (if available)
+</details>
 
 [↑ Back to Top](#top)
 
