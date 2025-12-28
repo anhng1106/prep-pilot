@@ -1,5 +1,6 @@
 import { userRoles } from "@/constants/constants";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import mongoose, { Document, Types } from "mongoose";
 
 export interface IUser extends Document {
@@ -25,6 +26,8 @@ export interface IUser extends Document {
     currentPeriodEnd: Date;
     nextPaymentAttempt: Date;
   };
+  resetPasswordToken: string;
+  resetPasswordExpire: Date;
 }
 
 const authProviderSchema = new mongoose.Schema({
@@ -74,6 +77,8 @@ const userSchema = new mongoose.Schema<IUser>(
       currentPeriodEnd: Date,
       nextPaymentAttempt: Date,
     },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   },
   {
     timestamps: true,
@@ -92,6 +97,21 @@ userSchema.pre("save", async function () {
 
 userSchema.methods.comparePassword = async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.getResetPasswordToken = function (): string {
+  const resetToken = crypto.randomBytes(20).toString("hex");
+
+  //hash token and set to resetPasswordToken field
+  this.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  //set expire time
+  this.resetPasswordExpire = new Date(Date.now() + 30 * 60 * 1000); //30 minutes from now
+
+  return resetToken;
 };
 
 const User = mongoose.models.User || mongoose.model<IUser>("User", userSchema);

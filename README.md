@@ -8,6 +8,8 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
 ![OpenAI](https://img.shields.io/badge/OpenAI-000000?logo=openai&logoColor=white)
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?logo=cloudinary&logoColor=white)
+![Nodemailer]
+![Mailtrap]
 ![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
