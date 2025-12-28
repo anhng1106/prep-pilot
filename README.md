@@ -44,7 +44,7 @@ An interview preparation web app that helps users practice with AI-generated que
 
 [![Demo Video](docs/media/demo-cover.png)](https://YOUR-DEMO-VIDEO-LINK)
 
-↑ Back to Top
+[↑ Back to Top](#top)
 
 ---
 
@@ -58,7 +58,7 @@ An interview preparation web app that helps users practice with AI-generated que
 | :------------------------------------------------: | :-------------------------------------------: |
 | ![AI Feedback](docs/media/screenshot-feedback.png) | ![Profile](docs/media/screenshot-profile.png) |
 
-↑ Back to Top
+[↑ Back to Top](#top)
 
 ---
 
@@ -72,7 +72,7 @@ An interview preparation web app that helps users practice with AI-generated que
 - **Media Storage**: Cloudinary
 - **Deployment**: Vercel
 
-↑ Back to Top
+[↑ Back to Top](#top)
 
 ---
 
@@ -86,7 +86,7 @@ An interview preparation web app that helps users practice with AI-generated que
 - **Secure Authentication**: NextAuth (email/OAuth provider)
 - **Image Uploads**: Cloudinary integration for avatars (or attachments)
 
-↑ Back to Top
+[↑ Back to Top](#top)
 
 ---
 
@@ -111,11 +111,14 @@ npm run dev
 Open http://localhost:3000
 ```
 
-↑ Back to Top
+[↑ Back to Top](#top)
 
 ---
 
 ## Environment Variables
+
+<details>
+<summary>Click to expand the environment variables</summary>
 
 Create a `.env.local` file in the project root.
 **Do not commit** `.env.local` to GitHub.
@@ -157,9 +160,14 @@ Use these if you configured unsigned uploads or want consistent organization.
 | `CLOUDINARY_UPLOAD_FOLDER` | `preppilot/avatars`    | Default folder for uploads.                     |
 | `CLOUDINARY_UPLOAD_PRESET` | `unsigned_preset_name` | Upload preset name (if using unsigned uploads). |
 
+[↑ Back to Top](#top)
+
 ---
 
 ## Project Structure
+
+<details>
+<summary>Click to view the project structure with diagram</summary>
 
 This repository follows a feature-oriented Next.js structure with a clear separation between:
 
@@ -231,6 +239,8 @@ flowchart TB
   Constants --> Enums[Enums and Limits]
 
 ```
+
+[↑ Back to Top](#top)
 
 ---
 
@@ -322,6 +332,8 @@ sequenceDiagram
   API-->>N: Display media
 ```
 
+[↑ Back to Top](#top)
+
 ---
 
 ## Authentication
@@ -360,6 +372,8 @@ GOOGLE_CLIENT_SECRET=...
 GITHUB_CLIENT_ID=...
 GITHUB_CLIENT_SECRET=...
 ```
+
+[↑ Back to Top](#top)
 
 ---
 
@@ -417,6 +431,8 @@ AI features can be gated behind a **Stripe monthly subscription**:
 
 - Keep prompt templates versioned so changes do not break the UI.
 - Validate AI responses before saving/rendering (recommended: schema validation).
+
+[↑ Back to Top](#top)
 
 ---
 
@@ -509,6 +525,8 @@ In GitHub Developer Settings → OAuth App:
 - MongoDB Atlas network access is configured to allow the deployment.
 - Cloudinary and Stripe keys are set for the correct environment (test vs live).
 
+[↑ Back to Top](#top)
+
 ---
 
 ## Future Improvements
@@ -523,6 +541,8 @@ In GitHub Developer Settings → OAuth App:
 - **Team / classroom mode**: shared libraries of interviews, rubrics, and admin-managed cohorts.
 - **Improved onboarding**: guided setup, role presets, and sample interviews for new users.
 - **Security & reliability**: rate limiting for AI routes, improved error handling, and better logging/monitoring.
+
+[↑ Back to Top](#top)
 
 ---
 
@@ -580,6 +600,10 @@ If you find a bug or want to request a feature, please open an issue and include
 - Steps to reproduce
 - Expected vs actual behavior
 - Screenshots/logs (if available)
+
+[↑ Back to Top](#top)
+
+---
 
 ## License
 
