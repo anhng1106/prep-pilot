@@ -8,6 +8,7 @@ import { useGenericSubmitHandler } from "../form/genericSubmitHandler";
 import { IUser } from "@/backend/models/user.model";
 import { toast } from "react-hot-toast";
 import { updateProfile } from "@/actions/auth.action";
+import Loader from "../layout/loader/Loader";
 
 export default function UpdateProfile() {
   const { data: userData, update } = useSession() as {
@@ -52,7 +53,7 @@ export default function UpdateProfile() {
   };
 
   if (userData === undefined) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
