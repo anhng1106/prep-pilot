@@ -84,7 +84,7 @@ export const adminPages = [
 
 export const pageIcons: { [key: string]: { icon: string; color: string } } = {
   "/app/dashboard": {
-    icon: "solar:speedometer-low-outline",
+    icon: "solar:spedometer-low-outline",
     color: "success",
   },
   "/app/interviews": {
