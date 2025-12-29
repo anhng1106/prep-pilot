@@ -7,7 +7,7 @@ interface PageTitle {
 }
 
 export const getPageTitle = (pathname: string): PageTitle => {
-  const pagesToCheck = pathname?.includes("/admin")
+  const pagesToCheck = pathname?.startsWith("/admin")
     ? adminPages
     : [...appPages, ...nestedPages];
 

@@ -31,7 +31,7 @@ const AppSiderbar = () => {
   const pathName = usePathname();
   const [selectedKey, setSelectedKey] = useState<Key>(pathName);
 
-  const pages = pathName?.includes("/admin") ? adminPages : appPages;
+  const pages = pathName?.startsWith("/admin") ? adminPages : appPages;
 
   useEffect(() => {
     setSelectedKey(pathName);
@@ -75,7 +75,7 @@ const AppSiderbar = () => {
             <ListboxItem
               key={page.path}
               className={`mt-3 ${
-                selectedKey?.toString()?.includes(page.path)
+                selectedKey?.toString() === page.path
                   ? "bg-gray-100 dark:bg-gray-800"
                   : ""
               }`}
