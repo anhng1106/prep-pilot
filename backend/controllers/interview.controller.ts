@@ -1,6 +1,7 @@
 import dbConnect from "../config/dbConnect";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import Interview from "../models/interview.model";
+import { evaluateAnswers, generateQuestions } from "../openai/openai";
 import { InterviewBody } from "../types/interview.types";
 import { getCurrentUser } from "../utils/auth";
 
@@ -29,7 +30,19 @@ export const createInterview = catchAsyncErrors(async (body: InterviewBody) => {
     user,
   } = body;
 
-  const questions = mockQuestions(numOfQuestions);
+  const questions = await generateQuestions(
+    industry,
+    topic,
+    type,
+    role,
+    numOfQuestions,
+    duration,
+    difficulty
+  );
+
+  console.log(questions);
+
+  // const questions = mockQuestions(numOfQuestions);
 
   const newInterview = await Interview.create({
     industry,
@@ -78,3 +91,10 @@ export const deleteUserInterview = catchAsyncErrors(
     return { deleted: true };
   }
 );
+
+export const evaluateAnswers1 = catchAsyncErrors(async () => {
+  await evaluateAnswers(
+    "Describe your process for conducting a needs analysis when designing an English course for adult learners, and give a brief example of how that analysis changed one course decision?",
+    "My process for conducting a needs analysis when designing an English course for adult learners involves several key steps. First, I gather information about the learners' backgrounds, goals, and proficiency levels through surveys and interviews. Next, I analyze this data to identify common themes and specific needs. Based on this analysis, I tailor the course content, materials, and activities to address those needs effectively. For example, in a previous course, I discovered that many learners were interested in improving their business communication skills. As a result, I incorporated more role-playing activities and case studies related to workplace scenarios, which significantly enhanced learner engagement and outcomes."
+  );
+});

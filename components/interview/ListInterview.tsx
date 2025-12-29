@@ -43,6 +43,49 @@ export default function ListInterview({ data }: ListInterviewProps) {
       const cellValue = interview[columnKey as keyof IInterview] as string;
 
       const handleDelete = async () => {
+        const confirmed = await new Promise<boolean>((resolve) => {
+          toast.custom(
+            (t) => (
+              <div
+                className="bg-white dark:bg-neutral-900 rounded-md shadow p-3 w-[400px] flex flex-col items-center justify-center text-center"
+                style={{
+                  transform: "translateY(35vh)",
+                }}
+              >
+                <p className="text-xl font-semibold">
+                  Delete interview {interview?.topic}?
+                </p>
+                <p className="text-base text-default-500 mt-1">
+                  This action cannot be undone.
+                </p>
+                <div className="flex gap-2 mt-3">
+                  <button
+                    className="px-3 py-1 rounded border border-default-200 text-base"
+                    onClick={() => {
+                      toast.dismiss(t.id);
+                      resolve(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="px-3 py-1 rounded bg-danger text-white text-base"
+                    onClick={() => {
+                      toast.dismiss(t.id);
+                      resolve(true);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ),
+            { duration: Infinity }
+          );
+        });
+
+        if (!confirmed) return;
+
         const res = await deleteInterview(interview._id.toString());
 
         if (res?.error) {
@@ -53,7 +96,7 @@ export default function ListInterview({ data }: ListInterviewProps) {
 
         if (res?.deleted) {
           toast.success("An interview has been deleted successfully!");
-          router.push("/app/interviews");
+          router.refresh();
         }
       };
 
