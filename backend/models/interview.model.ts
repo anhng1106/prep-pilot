@@ -72,7 +72,7 @@ const interviewSchema = new mongoose.Schema<IInterview>(
           ]?.includes(value);
         },
         message: (props) =>
-          `${props.value} is not a valid topic for the industry`,
+          `Topic '${props.value}' is not valid for the selected industry`,
       },
     },
     role: { type: String, required: [true, "Role is required"] },

@@ -157,19 +157,21 @@ export default function NewInterview() {
                 <Input
                   isRequired
                   type="number"
-                  label="No of Question"
+                  label="Number of Questions"
                   labelPlacement="outside"
                   name="numOfQuestions"
-                  placeholder="Enter no of questions"
+                  placeholder="Enter number of questions"
+                  min={1}
                 />
 
                 <Input
                   isRequired
                   type="number"
-                  label="Duration"
+                  label="Duration (minutes)"
                   labelPlacement="outside"
                   name="duration"
-                  placeholder="Enter duration"
+                  placeholder="Enter duration in minutes"
+                  min={2}
                 />
               </div>
             </div>
