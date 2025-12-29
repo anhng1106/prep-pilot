@@ -16,7 +16,7 @@ export interface IQuestion extends Document {
     clarity: number;
     completeness: number;
     relevance: number;
-    suggestion: string;
+    suggestions: string;
   };
 }
 
@@ -45,7 +45,7 @@ const questionSchema = new mongoose.Schema<IQuestion>({
     clarity: { type: Number, default: 0 },
     completeness: { type: Number, default: 0 },
     relevance: { type: Number, default: 0 },
-    suggestion: String,
+    suggestions: String,
   },
 });
 

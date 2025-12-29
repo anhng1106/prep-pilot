@@ -32,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster />
+        <Toaster position="top-center" />
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           <HeaderAnnouncement />
           <div className="relative flex flex-col h-screen">
