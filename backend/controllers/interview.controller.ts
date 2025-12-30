@@ -39,9 +39,6 @@ export const createInterview = catchAsyncErrors(async (body: InterviewBody) => {
     duration,
     difficulty
   );
-
-  console.log(questions);
-
   // const questions = mockQuestions(numOfQuestions);
 
   const newInterview = await Interview.create({
@@ -74,6 +71,14 @@ export const getInterview = catchAsyncErrors(async (request: Request) => {
   });
 
   return { interviews };
+});
+
+export const getInterviewById = catchAsyncErrors(async (id: string) => {
+  await dbConnect();
+
+  const interview = await Interview.findById(id);
+
+  return { interview };
 });
 
 export const deleteUserInterview = catchAsyncErrors(
