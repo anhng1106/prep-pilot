@@ -7,6 +7,9 @@ import { IInterview } from "@/backend/models/interview.model";
 import { getFirstIncompleteQuestionIndex } from "@/helpers/interview";
 import { formatTime } from "@/helpers/helper";
 import PromptInputWithBottomActions from "./PromptInputWithBottomActions.tsx";
+import { set } from "mongoose";
+import { toast } from "react-hot-toast";
+import { updateInterview } from "@/actions/interview.action.js";
 
 export default function Interview({ interview }: { interview: IInterview }) {
   const initialQuestionIndex = getFirstIncompleteQuestionIndex(
@@ -19,6 +22,7 @@ export default function Interview({ interview }: { interview: IInterview }) {
 
   const [timeLeft, setTimeLeft] = useState(interview?.durationLeft);
   const [showTimeAlert, setShowTimeAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const currentQuestion = interview?.questions[currentQuestionIndex];
 
@@ -42,9 +46,31 @@ export default function Interview({ interview }: { interview: IInterview }) {
   }, []);
 
   const handleAnswerChange = (value: string) => {
-    console.log(value);
-
     setAnswer(value);
+  };
+
+  const saveAnswerToDb = async (questionId: string, answer: string) => {
+    setLoading(true);
+
+    try {
+      const res = await updateInterview(
+        interview?._id?.toString(),
+        timeLeft?.toString(),
+        questionId,
+        answer
+      );
+
+      if (res?.error) {
+        setLoading(false);
+        return toast.error("Failed to save answer. Please try again.");
+      }
+
+      toast.success("Answer saved successfully!");
+    } catch (error) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -132,7 +158,7 @@ export default function Interview({ interview }: { interview: IInterview }) {
             />
           }
         >
-          Pass
+          Skip the question
         </Button>
 
         <Button

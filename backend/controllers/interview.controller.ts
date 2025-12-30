@@ -1,6 +1,6 @@
 import dbConnect from "../config/dbConnect";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
-import Interview from "../models/interview.model";
+import Interview, { IQuestion } from "../models/interview.model";
 import { evaluateAnswers, generateQuestions } from "../openai/openai";
 import { InterviewBody } from "../types/interview.types";
 import { getCurrentUser } from "../utils/auth";
@@ -97,9 +97,75 @@ export const deleteUserInterview = catchAsyncErrors(
   }
 );
 
-export const evaluateAnswers1 = catchAsyncErrors(async () => {
-  await evaluateAnswers(
-    "Describe your process for conducting a needs analysis when designing an English course for adult learners, and give a brief example of how that analysis changed one course decision?",
-    "My process for conducting a needs analysis when designing an English course for adult learners involves several key steps. First, I gather information about the learners' backgrounds, goals, and proficiency levels through surveys and interviews. Next, I analyze this data to identify common themes and specific needs. Based on this analysis, I tailor the course content, materials, and activities to address those needs effectively. For example, in a previous course, I discovered that many learners were interested in improving their business communication skills. As a result, I incorporated more role-playing activities and case studies related to workplace scenarios, which significantly enhanced learner engagement and outcomes."
-  );
-});
+export const updateInterviewDetails = catchAsyncErrors(
+  async (
+    interviewId: string,
+    durationLeft: string,
+    questionId: string,
+    answer: string,
+    completed?: boolean
+  ) => {
+    await dbConnect();
+
+    const interview = await Interview.findById(interviewId);
+
+    if (!interview) {
+      throw new Error("Interview not found");
+    }
+
+    if (answer) {
+      const questionIndex = interview.questions.findIndex(
+        (q: IQuestion) => q._id?.toString() === questionId
+      );
+
+      if (questionIndex === -1) {
+        throw new Error("Question not found in interview");
+      }
+
+      const question = interview?.questions[questionIndex];
+
+      let overallScore = 0;
+      let clarity = 0;
+      let relevance = 0;
+      let completeness = 0;
+      let suggestions = "No suggestions provided.";
+
+      if (answer !== "skip") {
+        ({ overallScore, clarity, relevance, completeness, suggestions } =
+          await evaluateAnswers(question.question, answer));
+      }
+
+      if (!question?.completed) {
+        interview.answerd = (interview.answerd || 0) + 1;
+      }
+
+      question.answer = answer;
+      question.completed = true;
+      question.results = {
+        overallScore,
+        clarity,
+        relevance,
+        completeness,
+        suggestions,
+      };
+      interview.durationLeft = Number(durationLeft);
+    }
+
+    if (interview?.answerd === interview?.questions.length) {
+      interview.status = "completed";
+    }
+
+    if (durationLeft === "0") {
+      interview.durationLeft = Number(durationLeft);
+      interview.status = "completed";
+    }
+
+    if (completed) {
+      interview.status = "completed";
+    }
+
+    await interview.save();
+
+    return { updated: true };
+  }
+);
