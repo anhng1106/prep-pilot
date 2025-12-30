@@ -40,16 +40,27 @@ export default function UpdateProfile() {
   });
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const file = Array.from(e.target.files || []);
+    const file = Array.from(e.target.files || [])[0];
+
+    if (!file) return;
+
+    // Check file size (1MB = 1048576 bytes)
+    const maxSizeInBytes = 1048576;
+    if (file.size > maxSizeInBytes) {
+      toast.error("File size exceeds 1MB. Please select a smaller image.");
+      e.target.value = ""; // Reset input
+      return;
+    }
 
     const reader = new FileReader();
 
     reader.onload = () => {
       if (reader.readyState === 2) {
         setAvatar(reader.result as string);
+        toast.success("Image selected successfully!");
       }
     };
-    reader.readAsDataURL(file[0]);
+    reader.readAsDataURL(file);
   };
 
   if (userData === undefined) {

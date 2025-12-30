@@ -15,7 +15,6 @@ import PromptInputWithBottomActions from "./PromptInputWithBottomActions.tsx";
 import { toast } from "react-hot-toast";
 import { updateInterview } from "@/actions/interview.action";
 import { useRouter } from "next/navigation.js";
-import { time } from "console";
 
 export default function Interview({ interview }: { interview: IInterview }) {
   const router = useRouter();
