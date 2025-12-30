@@ -3,7 +3,7 @@
 import {
   createInterview,
   deleteUserInterview,
-  evaluateAnswers1,
+  updateInterviewDetails,
 } from "@/backend/controllers/interview.controller";
 import { InterviewBody } from "@/backend/types/interview.types";
 
@@ -15,6 +15,18 @@ export async function deleteInterview(interviewId: string) {
   return await deleteUserInterview(interviewId);
 }
 
-export async function evaluateUserAnswers() {
-  return await evaluateAnswers1();
+export async function updateInterview(
+  interviewId: string,
+  durationLeft: string,
+  questionId: string,
+  answer: string,
+  completed?: boolean
+) {
+  return await updateInterviewDetails(
+    interviewId,
+    durationLeft,
+    questionId,
+    answer,
+    completed
+  );
 }
