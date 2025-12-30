@@ -4,10 +4,9 @@ import React, { useEffect, useState } from "react";
 import { Progress, Button, Alert, Chip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { IInterview } from "@/backend/models/interview.model";
-import { getFirstIncompleteQuestionIndex } from "@/helpers/interview.js";
-
+import { getFirstIncompleteQuestionIndex } from "@/helpers/interview";
+import { formatTime } from "@/helpers/helper";
 import PromptInputWithBottomActions from "./PromptInputWithBottomActions.tsx";
-import { formatTime } from "@/helpers/helper.js";
 
 export default function Interview({ interview }: { interview: IInterview }) {
   const initialQuestionIndex = getFirstIncompleteQuestionIndex(
