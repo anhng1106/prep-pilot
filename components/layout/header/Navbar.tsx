@@ -26,9 +26,7 @@ const Navbar = () => {
 
   const { data } = useSession();
 
-  const user = data?.user as IUser;
-
-  console.log(user);
+  const user = data?.user as unknown as IUser;
 
   return (
     <HeroUINavbar
