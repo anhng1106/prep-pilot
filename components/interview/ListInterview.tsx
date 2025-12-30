@@ -49,36 +49,66 @@ export default function ListInterview({ data }: ListInterviewProps) {
           toast.custom(
             (t) => (
               <div
-                className="bg-white dark:bg-neutral-900 rounded-md shadow p-3 w-[400px] flex flex-col items-center justify-center text-center"
-                style={{
-                  transform: "translateY(35vh)",
-                }}
+                className="fixed inset-0 z-[9999] flex-col-8 flex items-center justify-center px-4"
+                style={{ transform: "translateY(35vh)" }}
               >
-                <p className="text-xl font-semibold">
-                  Delete interview {interview?.topic}?
-                </p>
-                <p className="text-base text-default-500 mt-1">
-                  This action cannot be undone.
-                </p>
-                <div className="flex gap-2 mt-3">
-                  <button
-                    className="px-3 py-1 rounded border border-default-200 text-base"
-                    onClick={() => {
-                      toast.dismiss(t.id);
-                      resolve(false);
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="px-3 py-1 rounded bg-danger text-white text-base"
-                    onClick={() => {
-                      toast.dismiss(t.id);
-                      resolve(true);
-                    }}
-                  >
-                    Delete
-                  </button>
+                {/* subtle overlay */}
+                <div
+                  className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"
+                  onClick={() => {
+                    toast.remove(t.id);
+                    setTimeout(() => resolve(false), 0);
+                  }}
+                />
+
+                {/* card */}
+                <div
+                  className={[
+                    "relative w-[420px] max-w-[92vw]",
+                    "rounded-2xl bg-white dark:bg-neutral-900",
+                    "border border-default-200/70 dark:border-white/10",
+                    "shadow-lg shadow-black/10 dark:shadow-black/40",
+                    "p-5",
+                    "text-center",
+                  ].join(" ")}
+                  style={{ transform: "translateY(0)" }}
+                >
+                  {/* top accent line (minimal) */}
+                  {/* <div className="absolute inset-x-0 top-0 h-[3px] rounded-t-2xl bg-danger/70" /> */}
+
+                  <p className="text-xl font-semibold text-foreground">
+                    Delete interview{" "}
+                    <span className="text-danger">{interview?.topic}</span>?
+                  </p>
+
+                  <p className="mt-2 text-sm text-default-500">
+                    This action cannot be undone.
+                  </p>
+
+                  <div className="mt-5 flex items-center justify-center gap-3">
+                    <button
+                      className="min-w-[120px] rounded-xl px-4 py-2 text-sm font-semibold
+                         bg-default-100 hover:bg-default-200/80 text-foreground
+                         border border-default-200/60 transition-colors"
+                      onClick={() => {
+                        toast.remove(t.id);
+                        setTimeout(() => resolve(false), 0);
+                      }}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      className="min-w-[120px] rounded-xl px-4 py-2 text-sm font-semibold text-white
+                         bg-danger hover:bg-danger/90 shadow-md shadow-danger/30 transition"
+                      onClick={() => {
+                        toast.remove(t.id);
+                        setTimeout(() => resolve(true), 0);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             ),

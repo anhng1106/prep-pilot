@@ -13,12 +13,12 @@ export default function PromptInputWithBottomActions({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const [prompt, setPrompt] = useState<string>(value);
+  // const [prompt, setPrompt] = useState<string>(value);
 
-  const handlePromptChange = (value: string) => {
-    setPrompt(value);
-    onChange(value);
-  };
+  // const handlePromptChange = (value: string) => {
+  //   setPrompt(value);
+  //   onChange(value);
+  // };
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -31,8 +31,8 @@ export default function PromptInputWithBottomActions({
           }}
           minRows={3}
           radius="lg"
-          value={prompt}
-          onValueChange={handlePromptChange}
+          value={value}
+          onValueChange={onChange}
           variant="flat"
         />
         <div className="flex w-full items-center justify-between gap-2 overflow-scroll px-4 pb-4">

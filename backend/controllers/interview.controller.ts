@@ -136,7 +136,7 @@ export const updateInterviewDetails = catchAsyncErrors(
       }
 
       if (!question?.completed) {
-        interview.answerd = (interview.answerd || 0) + 1;
+        interview.answered = (interview.answered || 0) + 1;
       }
 
       question.answer = answer;
@@ -151,7 +151,7 @@ export const updateInterviewDetails = catchAsyncErrors(
       interview.durationLeft = Number(durationLeft);
     }
 
-    if (interview?.answerd === interview?.questions.length) {
+    if (interview?.answered === interview?.questions.length) {
       interview.status = "completed";
     }
 

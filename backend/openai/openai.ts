@@ -36,7 +36,7 @@ export const generateQuestions = async (
 `;
 
   const response = await client.chat.completions.create({
-    model: "gpt-5-mini",
+    model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
@@ -49,7 +49,7 @@ export const generateQuestions = async (
       },
     ],
     max_completion_tokens: maxTokens,
-    // temperature: 1, //higher temperature for more creative/random responses //gpt-5-mini doesn't support temperature
+    temperature: 0.8, //higher temperature for more creative/random responses //gpt-5-mini doesn't support temperature
   });
 
   const content = response.choices[0].message?.content || "";
@@ -123,7 +123,7 @@ export const evaluateAnswers = async (question: string, answer: string) => {
 
 `;
   const response = await client.chat.completions.create({
-    model: "gpt-5-mini",
+    model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
@@ -136,7 +136,7 @@ export const evaluateAnswers = async (question: string, answer: string) => {
       },
     ],
     max_completion_tokens: 1500,
-    // temperature: 1, //higher temperature for more creative/random responses //gpt-5-mini doesn't support temperature
+    temperature: 0.8, //higher temperature for more creative/random responses //gpt-5-mini doesn't support temperature
   });
 
   const content = response.choices[0].message?.content || "";
