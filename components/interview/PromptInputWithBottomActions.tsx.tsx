@@ -5,6 +5,19 @@ import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 import PromptInput from "./PromptInput";
+import { toast } from "react-hot-toast";
+
+declare global {
+  interface Window {
+    webkitSpeechRecognition: any;
+    SpeechRecognition: any;
+  }
+}
+
+const SpeechRecognition =
+  typeof window !== "undefined" &&
+  ((window as any).SpeechRecognition ||
+    (window as any).webkitSpeechRecognition);
 
 export default function PromptInputWithBottomActions({
   value,
@@ -19,6 +32,60 @@ export default function PromptInputWithBottomActions({
   //   setPrompt(value);
   //   onChange(value);
   // };
+
+  const handleVoiceInput = () => {
+    if (!SpeechRecognition) {
+      return toast.error("Voice input is not supported in this browser.");
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      toast.success("Listening... Speak now!");
+    };
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      onChange(value + " " + transcript);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error:", event.error);
+
+      switch (event.error) {
+        case "no-speech":
+          toast.error("No speech detected. Please try again.");
+          break;
+        case "audio-capture":
+          toast.error("Microphone not found or not accessible.");
+          break;
+        case "not-allowed":
+          toast.error(
+            "Microphone access denied. Please allow microphone access."
+          );
+          break;
+        case "network":
+          toast.error("Network error occurred. Check your connection.");
+          break;
+        default:
+          toast.error(`Error: ${event.error}`);
+      }
+    };
+
+    recognition.onend = () => {
+      console.log("Speech recognition ended");
+    };
+
+    try {
+      recognition.start();
+    } catch (error) {
+      toast.error("Failed to start speech recognition.");
+      console.error(error);
+    }
+  };
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -47,12 +114,13 @@ export default function PromptInputWithBottomActions({
                 />
               }
               variant="flat"
+              onPress={handleVoiceInput}
             >
               Type with Voice
             </Button>
           </div>
           <p className="py-1 text-tiny text-default-400">
-            Characters:{prompt.length}
+            Characters:{value.length}
           </p>
         </div>
       </form>
