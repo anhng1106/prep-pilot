@@ -6,7 +6,6 @@ import React from "react";
 
 const Results = () => {
   const handleClick = () => {
-    console.log("Button clicked!");
     evaluateUserAnswers();
   };
   return (

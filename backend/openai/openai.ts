@@ -14,7 +14,7 @@ export const generateQuestions = async (
   difficulty: string
 ) => {
   //use token to control costs
-  const tokensPerQuestion = 500; //estimated tokens per question
+  const tokensPerQuestion = 1500; //estimated tokens per question
   const maxTokens = numQuestions * tokensPerQuestion;
 
   const prompt = `Generate total "${numQuestions}" "${difficulty}" "${type}" questions for a ${role} role in the "${industry}" industry on the topic of "${topic}". 
@@ -22,7 +22,7 @@ export const generateQuestions = async (
 
   **Ensure the following:**
   - The questions are well-balanced, including both open-ended and specific questions.
-  - Each question is desgined to evaluate a specific skill or knowledge area relevant to the role.
+  - Each question is designed to evaluate a specific skill or knowledge area relevant to the role.
   - The questions should vary in "${difficulty}" interview in the "${industry}" industry, with a mix of easy, medium, and hard questions.
   - The questions are clear, concise, and engaging for the candidate.
   - Ensure the questions are directly aligned with the specified topic "${topic}", "${difficulty}" responsibilities and expertise in "${role}".
@@ -31,7 +31,7 @@ export const generateQuestions = async (
   **Instructions:**
   - Always follow same format questions.
   - Provide all question without any prefix.
-  - No question number or bullet points or hypens - is required.
+  - No question number or bullet points or hyphens - is required.
   - Each question should be separated by a newline.
 `;
 
@@ -41,7 +41,7 @@ export const generateQuestions = async (
       {
         role: "system",
         content:
-          "You are expert in generating interview questions tailored to specific roles and industries, experience levels and topics. Your responses should be professional concise and well-structed. ",
+          "You are expert in generating interview questions tailored to specific roles and industries, experience levels and topics. Your responses should be professional concise and well-structured. ",
       },
       {
         role: "user",
@@ -128,7 +128,7 @@ export const evaluateAnswers = async (question: string, answer: string) => {
       {
         role: "system",
         content:
-          "You are expert in evaluate interview answers with strong understanding of assessing answers to interview questions based on relevance, clarity, and completeness. Your responses should be professional concise and well-structed. ",
+          "You are expert in evaluate interview answers with strong understanding of assessing answers to interview questions based on relevance, clarity, and completeness. Your responses should be professional concise and well-structured. ",
       },
       {
         role: "user",
