@@ -18,3 +18,21 @@ export const formatTime = (totalSeconds: number) => {
 
   return `${formattedMinutes}:${formattedSeconds}`;
 };
+
+export const paginate = <T>(
+  data: T[],
+  currentPage: number,
+  itemsPerPage: number
+): T[] => {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  return data.slice(startIndex, endIndex);
+};
+
+export const getTotalPages = (
+  totalQuestions: number,
+  questionsPerPage: number
+): number => {
+  return Math.ceil(totalQuestions / questionsPerPage);
+};
