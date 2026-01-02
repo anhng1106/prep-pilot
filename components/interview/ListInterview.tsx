@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { deleteInterview } from "@/actions/interview.action";
 import Link from "next/link";
+import { calculateAverageScore } from "@/helpers/interview";
 
 export const columns = [
   { name: "INTERVIEW", uid: "interview" },
@@ -145,7 +146,9 @@ export default function ListInterview({ data }: ListInterviewProps) {
         case "result":
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-sm capitalize">0/10</p>
+              <p className="text-bold text-sm capitalize">
+                {calculateAverageScore(interview.questions)}/10
+              </p>
               <p className="text-bold text-sm capitalize text-default-400">
                 {interview?.numOfQuestions} Questions
               </p>
@@ -167,7 +170,7 @@ export default function ListInterview({ data }: ListInterviewProps) {
             <>
               {interview?.answers === 0 && interview?.status !== "completed" ? (
                 <Button
-                  className="bg-foreground font-medium text-background w-full"
+                  className="bg-foreground font-medium text-background w-full hover:bg-foreground/90"
                   color="secondary"
                   endContent={
                     <Icon icon="solar:arrow-right-linear" fontSize={20} />
@@ -179,7 +182,7 @@ export default function ListInterview({ data }: ListInterviewProps) {
                   Start
                 </Button>
               ) : (
-                <div className="relative flex items-center gap-2">
+                <div className="relative flex items-center justify-center gap-2">
                   {interview?.status !== "completed" && (
                     <Tooltip
                       color="danger"

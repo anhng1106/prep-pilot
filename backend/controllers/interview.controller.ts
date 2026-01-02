@@ -131,8 +131,16 @@ export const updateInterviewDetails = catchAsyncErrors(
       let suggestions = "No suggestions provided.";
 
       if (answer !== "skip") {
-        ({ overallScore, clarity, relevance, completeness, suggestions } =
-          await evaluateAnswers(question.question, answer));
+        try {
+          const evaluation = await evaluateAnswers(question.question, answer);
+          overallScore = evaluation.overallScore;
+          clarity = evaluation.clarity;
+          relevance = evaluation.relevance;
+          completeness = evaluation.completeness;
+          suggestions = evaluation.suggestions;
+        } catch (error) {
+          console.error("Evaluation error:", error);
+        }
       }
 
       if (!question?.completed) {
@@ -141,7 +149,7 @@ export const updateInterviewDetails = catchAsyncErrors(
 
       question.answer = answer;
       question.completed = true;
-      question.results = {
+      question.result = {
         overallScore,
         clarity,
         relevance,
@@ -149,6 +157,10 @@ export const updateInterviewDetails = catchAsyncErrors(
         suggestions,
       };
       interview.durationLeft = Number(durationLeft);
+
+      interview.answers = interview.questions.filter(
+        (q: IQuestion) => q.completed === true
+      ).length;
     }
 
     if (interview?.answered === interview?.questions.length) {
