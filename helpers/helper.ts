@@ -31,8 +31,21 @@ export const paginate = <T>(
 };
 
 export const getTotalPages = (
-  totalQuestions: number,
-  questionsPerPage: number
+  totalItems: number,
+  itemssPerPage: number
 ): number => {
-  return Math.ceil(totalQuestions / questionsPerPage);
+  return Math.ceil(totalItems / itemssPerPage);
+};
+
+export const updateSearchParams = (
+  queryParams: URLSearchParams,
+  key: string,
+  value: string
+) => {
+  if (queryParams.has(key)) {
+    queryParams.set(key, value);
+  } else {
+    queryParams.append(key, value);
+  }
+  return queryParams;
 };

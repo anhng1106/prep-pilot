@@ -1,23 +1,11 @@
-import { s } from "framer-motion/client";
 import dbConnect from "../config/dbConnect";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
-import Interview, { IQuestion } from "../models/interview.model";
+import Interview, { IInterview, IQuestion } from "../models/interview.model";
 import { evaluateAnswers, generateQuestions } from "../openai/openai";
 import { InterviewBody } from "../types/interview.types";
 import { getCurrentUser } from "../utils/auth";
 import { getQueryStr } from "../utils/utils";
 import APIFilters from "../utils/apiFilters";
-
-const mockQuestions = (numOfQuestions: number) => {
-  const questions = [];
-  for (let i = 0; i < numOfQuestions; i++) {
-    questions.push({
-      question: `This is mock question ${i + 1}?`,
-      answer: `Mock answer ${i + 1}`,
-    });
-  }
-  return questions;
-};
 
 export const createInterview = catchAsyncErrors(async (body: InterviewBody) => {
   await dbConnect();
@@ -64,10 +52,12 @@ export const createInterview = catchAsyncErrors(async (body: InterviewBody) => {
       })();
 });
 
-export const getInterview = catchAsyncErrors(async (request: Request) => {
+export const getInterviews = catchAsyncErrors(async (request: Request) => {
   await dbConnect();
 
   const user = await getCurrentUser(request);
+
+  const resPerPage: number = 5;
 
   const { searchParams } = new URL(request.url);
   const queryStr = getQueryStr(searchParams);
@@ -77,9 +67,14 @@ export const getInterview = catchAsyncErrors(async (request: Request) => {
   const apiFilters = new APIFilters(Interview, queryStr);
   apiFilters.filter();
 
-  const interviews = await apiFilters.query;
+  let interviews: IInterview[] = await apiFilters.query;
 
-  return { interviews };
+  const filteredCount: number = interviews.length;
+  apiFilters.pagination(resPerPage).sort();
+
+  interviews = await apiFilters.query.clone();
+
+  return { interviews, resPerPage, filteredCount };
 });
 
 export const getInterviewById = catchAsyncErrors(async (id: string) => {
