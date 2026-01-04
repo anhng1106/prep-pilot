@@ -19,10 +19,13 @@ import { Key } from "@react-types/shared";
 import Link from "next/link";
 import { calculateAverageScore } from "@/helpers/interview";
 import { useRouter } from "next/navigation";
+import CustomPagination from "../layout/pagination/CustomPagination";
 
 type Props = {
   data: {
     interviews: IInterview[];
+    resPerPage: number;
+    filteredCount: number;
   };
 };
 
@@ -34,7 +37,7 @@ export const columns = [
 ];
 
 const ListResults = ({ data }: Props) => {
-  const { interviews } = data;
+  const { interviews, resPerPage, filteredCount } = data;
 
   const router = useRouter();
 
@@ -153,6 +156,13 @@ const ListResults = ({ data }: Props) => {
           )}
         </TableBody>
       </Table>
+
+      <div className="flex justify-center items-center mt-10">
+        <CustomPagination
+          resPerPage={resPerPage}
+          filteredCount={filteredCount}
+        />
+      </div>
     </div>
   );
 };

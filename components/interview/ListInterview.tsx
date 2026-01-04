@@ -22,6 +22,7 @@ import { toast } from "react-hot-toast";
 import { deleteInterview } from "@/actions/interview.action";
 import Link from "next/link";
 import { calculateAverageScore } from "@/helpers/interview";
+import CustomPagination from "../layout/pagination/CustomPagination";
 
 export const columns = [
   { name: "INTERVIEW", uid: "interview" },
@@ -35,11 +36,13 @@ export const interviews = [];
 type ListInterviewProps = {
   data: {
     interviews: IInterview[];
+    resPerPage: number;
+    filteredCount: number;
   };
 };
 
 export default function ListInterview({ data }: ListInterviewProps) {
-  const { interviews } = data;
+  const { interviews, resPerPage, filteredCount } = data;
 
   const router = useRouter();
 
@@ -230,9 +233,9 @@ export default function ListInterview({ data }: ListInterviewProps) {
     [router]
   );
 
-  let queryParams: any;
-
   const handleStatusChange = (status: string) => {
+    let queryParams: any;
+
     queryParams = new URLSearchParams(window.location.search);
 
     if (queryParams.has("status") && status === "all") {
@@ -285,6 +288,13 @@ export default function ListInterview({ data }: ListInterviewProps) {
           )}
         </TableBody>
       </Table>
+
+      <div className="flex justify-center items-center mt-10">
+        <CustomPagination
+          resPerPage={resPerPage}
+          filteredCount={filteredCount}
+        />
+      </div>
     </div>
   );
 }
