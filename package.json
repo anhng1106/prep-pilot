@@ -18,6 +18,8 @@
     "@heroui/theme": "^2.4.25",
     "@heroui/user": "^2.2.24",
     "@iconify/react": "^6.0.2",
+    "@stripe/react-stripe-js": "^5.4.1",
+    "@stripe/stripe-js": "^8.6.0",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.8.0",
     "framer-motion": "^12.23.26",
@@ -32,7 +34,8 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hot-toast": "^2.6.0",
-    "recharts": "^3.6.0"
+    "recharts": "^3.6.0",
+    "stripe": "^20.1.0"
   },
   "devDependencies": {
     "@react-types/shared": "^3.32.1",

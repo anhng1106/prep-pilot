@@ -50,8 +50,6 @@ const options = {
     async signIn({ user, account, profile }: any) {
       await dbConnect();
 
-      console.log(profile);
-
       if (account.provider === "credentials") {
         user.id = user?._id.toString();
       } else {

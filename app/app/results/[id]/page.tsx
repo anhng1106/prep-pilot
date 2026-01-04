@@ -29,7 +29,6 @@ const ResultDetailsPage = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
 
   const data = await getInterview(id);
-  console.log("Interview Data:", data);
 
   if (!data?.interview) {
     throw new Error("This interview not found.");
