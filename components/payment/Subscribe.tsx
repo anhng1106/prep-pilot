@@ -30,7 +30,7 @@ const Subscribe = () => {
 };
 
 const CheckoutForm = () => {
-  const { data } = useSession();
+  const { data, update } = useSession();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -83,8 +83,18 @@ const CheckoutForm = () => {
       if (res.subscription) {
         setLoading(false);
 
-        toast.success("Subscription successful!");
-        router.push("/app/dashboard");
+        const updateSession = await update({
+          subscription: {
+            id: res.subscription.id,
+            status: res.subscription.status,
+            current_period_end: res.subscription.current_period_end,
+          },
+        });
+
+        if (updateSession) {
+          toast.success("Subscription successful!");
+          router.push("/app/dashboard");
+        }
       }
     } catch (error: any) {
       setError(error.message || "An unexpected error occurred.");
