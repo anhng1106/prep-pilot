@@ -1,9 +1,12 @@
+import { s } from "framer-motion/client";
 import dbConnect from "../config/dbConnect";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import Interview, { IQuestion } from "../models/interview.model";
 import { evaluateAnswers, generateQuestions } from "../openai/openai";
 import { InterviewBody } from "../types/interview.types";
 import { getCurrentUser } from "../utils/auth";
+import { getQueryStr } from "../utils/utils";
+import APIFilters from "../utils/apiFilters";
 
 const mockQuestions = (numOfQuestions: number) => {
   const questions = [];
@@ -66,9 +69,15 @@ export const getInterview = catchAsyncErrors(async (request: Request) => {
 
   const user = await getCurrentUser(request);
 
-  const interviews = await Interview.find({
-    user: user?._id,
-  });
+  const { searchParams } = new URL(request.url);
+  const queryStr = getQueryStr(searchParams);
+
+  queryStr.user = user._id.toString();
+
+  const apiFilters = new APIFilters(Interview, queryStr);
+  apiFilters.filter();
+
+  const interviews = await apiFilters.query;
 
   return { interviews };
 });
