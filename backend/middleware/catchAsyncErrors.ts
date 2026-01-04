@@ -43,8 +43,6 @@ export const catchAsyncErrors =
     } catch (error: any) {
       const { message, statusCode } = extractErrors(error);
 
-      console.log(message, statusCode);
-
       return {
         error: {
           message,

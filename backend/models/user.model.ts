@@ -18,7 +18,7 @@ export interface IUser extends Document {
     providerId: string;
   }[];
   subscription: {
-    id: string;
+    subscriptionId: string;
     customerId: string;
     createdAt: Date;
     status: string;
@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema<IUser>(
       default: [],
     },
     subscription: {
-      id: String,
+      subscriptionId: String,
       customerId: String,
       createdAt: Date,
       status: String,
