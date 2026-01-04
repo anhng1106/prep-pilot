@@ -23,8 +23,6 @@ export const createSubscription = catchAsyncErrors(
       expand: ["latest_invoice.payment_intent"],
     });
 
-    console.log("subscription", subscription);
-
     return { subscription };
   }
 );
@@ -47,7 +45,6 @@ export const cancelSubscription = catchAsyncErrors(async (email: string) => {
 
 export const subscriptionWebhook = async (req: Request) => {
   const rawBody = await req.text();
-  console.log("abcccccccccccc");
 
   const headersList = await headers();
 
@@ -73,19 +70,23 @@ export const subscriptionWebhook = async (req: Request) => {
   switch (event.type) {
     case "invoice.payment_succeeded":
       const invoice = event.data.object as any;
-
       const email = invoice.customer_email;
+      const subscriptionId = invoice.parent?.subscription_details?.subscription;
+
+      if (!subscriptionId) {
+        console.error("Subscription ID not found in invoice");
+        break;
+      }
+
       const customer = await stripe.customers.retrieve(
         invoice.customer as string
       );
 
-      //update customer subscription status to active
       await User.findOneAndUpdate(
         { email },
         {
           $set: {
-            "subscription.subscriptionId":
-              invoice.parent?.subscription_details?.subscription,
+            "subscription.subscriptionId": subscriptionId,
             "subscription.customerId": customer.id,
             "subscription.status": "active",
             "subscription.createdAt": new Date(invoice.created * 1000),
@@ -98,7 +99,6 @@ export const subscriptionWebhook = async (req: Request) => {
           },
         }
       );
-
       break;
     case "invoice.payment_failed":
       const paymentFailed = event.data.object as any;
@@ -123,7 +123,7 @@ export const subscriptionWebhook = async (req: Request) => {
         { "subscription.subscriptionId": subscriptionDeleted.id },
         {
           $set: {
-            "subscription.status": "canceled",
+            "subscription.status": "cancelled",
             "subscription.nextPaymentAttempt": null,
           },
         }

@@ -15,7 +15,7 @@ const Unsubscribe = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const { data } = useSession();
+  const { data, update } = useSession();
   const user = data?.user as IUser | undefined;
 
   const handleUnsubscribe = async () => {
@@ -37,8 +37,16 @@ const Unsubscribe = () => {
     }
 
     if (res?.status) {
-      toast.success("You have successfully unsubscribed.");
-      router.push("/");
+      const updateSession = await update({
+        subscription: {
+          status: res?.status,
+        },
+      });
+
+      if (updateSession) {
+        toast.success("You have successfully unsubscribed.");
+        router.push("/");
+      }
     }
   };
 
