@@ -3,6 +3,7 @@ import dbConnect from "../config/dbConnect";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import stripe from "../utils/stripe";
 import User from "../models/user.model";
+import { getCurrentUser } from "../utils/auth";
 
 export const createSubscription = catchAsyncErrors(
   async (email: string, paymentMethodId: string) => {
@@ -135,3 +136,30 @@ export const subscriptionWebhook = async (req: Request) => {
 
   return { success: true };
 };
+
+export const getInvoices = catchAsyncErrors(async (req: Request) => {
+  await dbConnect();
+
+  const sessionUser = await getCurrentUser(req);
+
+  // Query database to get fresh subscription data
+  const user = await User.findOne({ email: sessionUser.email });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  if (!user.subscription?.customerId) {
+    return {
+      invoices: [],
+    };
+  }
+
+  const invoices = await stripe.invoices.list({
+    customer: user.subscription.customerId,
+  });
+
+  return {
+    invoices: invoices.data,
+  };
+});
