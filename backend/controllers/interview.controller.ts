@@ -6,6 +6,8 @@ import { InterviewBody } from "../types/interview.types";
 import { getCurrentUser } from "../utils/auth";
 import { getQueryStr } from "../utils/utils";
 import APIFilters from "../utils/apiFilters";
+import { getFirstDayOfMonth, getToday } from "@/helpers/helper";
+import mongoose from "mongoose";
 
 export const createInterview = catchAsyncErrors(async (body: InterviewBody) => {
   await dbConnect();
@@ -185,3 +187,161 @@ export const updateInterviewDetails = catchAsyncErrors(
     return { updated: true };
   }
 );
+
+export const getInterviewStats = catchAsyncErrors(async (request: Request) => {
+  await dbConnect();
+
+  const user = await getCurrentUser(request);
+
+  const { searchParams } = new URL(request.url);
+  const queryStr = getQueryStr(searchParams);
+
+  const start = new Date((queryStr.start as string) || getFirstDayOfMonth());
+  const end = new Date((queryStr.end as string) || getToday());
+
+  start.setHours(0, 0, 0, 0);
+  end.setHours(23, 59, 59, 999);
+
+  const stats = await Interview.aggregate([
+    //filter data
+    {
+      $match: {
+        user: new mongoose.Types.ObjectId(user?._id),
+        createdAt: { $gte: start, $lte: end },
+      },
+    },
+    {
+      $facet: {
+        dateSpecific: [
+          {
+            $group: {
+              _id: {
+                $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+              },
+              totalInterviews: { $sum: 1 },
+              completedInterviews: {
+                $sum: {
+                  $cond: [{ $eq: ["$status", "completed"] }, 1, 0],
+                },
+              },
+              unansweredQuestions: {
+                $sum: {
+                  $reduce: {
+                    input: "$questions",
+                    initialValue: 0,
+                    in: {
+                      $add: [
+                        "$$value",
+                        {
+                          $cond: [{ $eq: ["$$this.completed", false] }, 1, 0],
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+              completedQuestions: {
+                $sum: {
+                  $reduce: {
+                    input: "$questions",
+                    initialValue: 0,
+                    in: {
+                      $add: [
+                        "$$value",
+                        {
+                          $cond: [{ $eq: ["$$this.completed", true] }, 1, 0],
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              date: "$_id",
+              totalInterviews: 1,
+              completedQuestions: 1,
+              unansweredQuestions: 1,
+              completionRate: {
+                $multiply: [
+                  {
+                    $divide: ["$completedInterviews", "$totalInterviews"],
+                  },
+                  100,
+                ],
+              },
+            },
+          },
+        ],
+        overallStats: [
+          {
+            $group: {
+              _id: null,
+              totalInterviews: { $sum: 1 },
+              completedInterviews: {
+                $sum: {
+                  $cond: [{ $eq: ["$status", "completed"] }, 1, 0],
+                },
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              totalInterviews: 1,
+              overallCompletionRate: {
+                $multiply: [
+                  { $divide: ["$completedInterviews", "$totalInterviews"] },
+                  100,
+                ],
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        overallStats: { $arrayElemAt: ["$overallStats", 0] },
+        dateSpecific: 1,
+      },
+    },
+  ]);
+
+  if (!stats.length) {
+    return {
+      overallStats: {
+        totalInterviews: 0,
+        completionRate: "0.00",
+      },
+
+      stats: [],
+    };
+  }
+
+  const overallStats = stats[0].overallStats || {
+    totalInterviews: 0,
+    overallCompletionRate: 0,
+  };
+  const dateSpecificStats = stats[0].dateSpecific || [];
+  const formattedStats = {
+    totalInterviews: overallStats.totalInterviews,
+    completionRate: overallStats.overallCompletionRate
+      ? overallStats.overallCompletionRate?.toFixed(2)
+      : "0.00",
+    stats: dateSpecificStats.map((stat: any) => ({
+      date: stat?.date,
+      totalInterviews: stat.totalInterviews,
+      completedQuestions: stat.completedQuestions,
+      unansweredQuestions: stat.unansweredQuestions,
+      completionRate: stat.completionRate
+        ? stat.completionRate.toFixed(2)
+        : "0.00",
+    })),
+  };
+
+  return formattedStats;
+});

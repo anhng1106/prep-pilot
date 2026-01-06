@@ -7,6 +7,15 @@ declare module "next-auth" {
     user: DefaultSession["user"] & {
       _id?: string;
       id?: string;
+      subscription?: {
+        subscriptionId?: string;
+        customerId?: string;
+        createdAt?: string | Date;
+        status?: string;
+        startDate?: string | Date;
+        currentPeriodEnd?: string | Date;
+        nextPaymentAttempt?: string | Date;
+      };
     };
   }
 }
