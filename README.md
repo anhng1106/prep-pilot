@@ -40,12 +40,10 @@ An interview preparation web app that helps users practice with AI-generated que
 
 ## Demo
 
-- Live Demo: https://YOUR-DEPLOYMENT-URL.vercel.app
-- Video Demo (optional): https://YOUR-DEMO-VIDEO-LINK
+- Live Demo: https://prep-pilot-kohl.vercel.app/
+- Video Demo: https://youtu.be/GLINyhjFjl4
 
-> Click the image below to watch the demo video
-
-![Demo Video] 
+Demo Video
 
 https://github.com/user-attachments/assets/9f5cfd17-0457-4986-bb2b-757d508359df
 
