@@ -21,6 +21,7 @@ import { signOut, useSession } from "next-auth/react";
 import { IUser } from "@/backend/models/user.model";
 import { useState } from "react";
 import { isUserAdmin, isUserSubscribed } from "@/helpers/auth";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,7 +51,9 @@ const Navbar = () => {
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        <NavbarItem className="hidden sm:flex gap-2"></NavbarItem>
+        <NavbarItem className="hidden sm:flex gap-2">
+          <ThemeSwitcher />
+        </NavbarItem>
 
         {data?.user ? (
           <>
@@ -103,6 +106,7 @@ const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+        <ThemeSwitcher />
         {data?.user ? (
           <NavbarMenuToggle aria-label="Open menu" />
         ) : (
