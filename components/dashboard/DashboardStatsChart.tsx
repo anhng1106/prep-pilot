@@ -19,7 +19,7 @@ type StatsProps = {
 };
 
 const DashboardStatsChart = ({ stats }: { stats: StatsProps[] }) => {
-  const sortedStats = stats.sort(
+  const sortedStats = [...stats].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
   );
 
