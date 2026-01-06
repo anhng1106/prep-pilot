@@ -53,11 +53,11 @@ export const updateUserProfile = catchAsyncErrors(
     } = { name };
 
     if (avatar) {
+      // Upload new avatar first, then remove old one if provided
       data.profilePicture = await upload_file(avatar, "prep-pilot/avatars");
-    }
-
-    if (oldAvatar) {
-      await delete_file(oldAvatar);
+      if (oldAvatar) {
+        await delete_file(oldAvatar);
+      }
     }
 
     await User.findOneAndUpdate({ email: userEmail }, { ...data });

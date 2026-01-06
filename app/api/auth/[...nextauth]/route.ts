@@ -103,21 +103,27 @@ const options = {
       } else {
         await dbConnect();
 
-        const dbUser = await User.findById(token.user.id);
-
-        if (dbUser) {
-          token.user = dbUser;
+        const userId = token?.user?.id || token?.user?._id;
+        if (userId) {
+          const dbUser = await User.findById(userId);
+          if (dbUser) {
+            token.user = dbUser;
+          }
         }
       }
 
       if (trigger === "update") {
-        const updatedUser = await User.findById(token.user._id);
+        const userId = token?.user?.id || token?.user?._id;
+        if (userId) {
+          const updatedUser = await User.findById(userId);
 
-        if (session.subscription) {
-          updatedUser.subscription = session.subscription;
-        }
-        if (updatedUser) {
-          token.user = updatedUser;
+          if (session && session.subscription && updatedUser) {
+            updatedUser.subscription = session.subscription;
+          }
+
+          if (updatedUser) {
+            token.user = updatedUser;
+          }
         }
       }
       return token;
