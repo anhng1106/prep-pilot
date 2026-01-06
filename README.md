@@ -4,6 +4,7 @@
 ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white)
+![HeroUI](https://img.shields.io/badge/HeroUI-000000?logo=vercel&logoColor=white)
 ![NextAuth](<https://img.shields.io/badge/Auth.js%20(NextAuth)-000?logo=auth0&logoColor=white>)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
 ![OpenAI](https://img.shields.io/badge/OpenAI-000000?logo=openai&logoColor=white)
@@ -44,7 +45,11 @@ An interview preparation web app that helps users practice with AI-generated que
 
 > Click the image below to watch the demo video
 
-[![Demo Video](docs/media/demo-cover.png)](https://YOUR-DEMO-VIDEO-LINK)
+![Demo Video] 
+
+https://github.com/user-attachments/assets/9f5cfd17-0457-4986-bb2b-757d508359df
+
+
 
 [↑ Back to Top](#top)
 
