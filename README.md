@@ -135,16 +135,20 @@ Create a `.env.local` file in the project root.
 
 ### 1) Required Variables
 
-| Variable                | Example                                | Description                                                                |
-| ----------------------- | -------------------------------------- | -------------------------------------------------------------------------- |
-| `MONGODB_URI_LOCAL`     | `mongodb://localhost:27017/prep-pilot` | MongoDB connection string (Atlas recommended).                             |
-| `MONGODB_URI`           | `mongodb://localhost:27017/prep-pilot` | MongoDB connection string (Atlas recommended).                             |
-| `NEXTAUTH_URL`          | `http://localhost:3000`                | Base URL used by NextAuth callbacks. Use your Vercel domain in production. |
-| `NEXTAUTH_SECRET`       | `your-long-random-secret`              | Secret for signing/encrypting NextAuth cookies/JWT.                        |
-| `OPENAI_API_KEY`        | `sk-...`                               | OpenAI API key (server-side only).                                         |
-| `CLOUDINARY_CLOUD_NAME` | `your_cloud_name`                      | Cloudinary cloud name.                                                     |
-| `CLOUDINARY_API_KEY`    | `1234567890`                           | Cloudinary API key (server-side).                                          |
-| `CLOUDINARY_API_SECRET` | `your_api_secret`                      | Cloudinary API secret (server-side).                                       |
+| Variable                             | Example                                | Description                                                                                                                |
+| ------------------------------------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `MONGODB_URI_LOCAL`                  | `mongodb://localhost:27017/prep-pilot` | MongoDB connection string (Atlas recommended).                                                                             |
+| `MONGODB_URI`                        | `mongodb://localhost:27017/prep-pilot` | MongoDB connection string (Atlas recommended).                                                                             |
+| `API_URI`                            | `http://localhost:3000`                | Local host API URL                                                                                                         |
+| `NEXTAUTH_URL`                       | `http://localhost:3000`                | Base URL used by NextAuth callbacks. Use your Vercel domain in production.                                                 |
+| `NEXTAUTH_SECRET`                    | `your-long-random-secret`              | Secret for signing/encrypting NextAuth cookies/JWT.                                                                        |
+| `OPENAI_API_KEY`                     | `sk-...`                               | OpenAI API key (server-side only).                                                                                         |
+| `CLOUDINARY_CLOUD_NAME`              | `your_cloud_name`                      | Cloudinary cloud name.                                                                                                     |
+| `CLOUDINARY_API_KEY`                 | `1234567890`                           | Cloudinary API key (server-side).                                                                                          |
+| `CLOUDINARY_API_SECRET`              | `your_api_secret`                      | Cloudinary API secret (server-side).                                                                                       |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | `your_api_secret`                      | Stripe publisable key with prefix                                                                                          |
+| `STRIPE_SECRET_KEY`                  | `your_api_secret`                      | Stripe secret key                                                                                                          |
+| `STRIPE_WEBHOOK_SECRET`              | `your_api_secret`                      | Stripe webhook secret key verify that incoming webhook events are genuinely sent by Stripe and haven’t been tampered with. |
 
 ---
 
@@ -272,7 +276,7 @@ Prep Pilot is a Next.js interview practice app using NextAuth (Google/GitHub/Cre
 
 ### 2) Start a Mock Interview (Create Session)
 
-- User selects role/topic/level
+- User selects industry/role/topic/level
 - Server creates a **Session** in **MongoDB**
 - Session id is returned to the client to continue the interview flow
 
@@ -573,7 +577,6 @@ In GitHub Developer Settings → OAuth App:
 <details>
   <summary>Click to explore planned futures coming.</summary>
 
-- **Voice mode**: record answers, transcribe audio, and generate feedback on spoken responses.
 - **Adaptive difficulty**: automatically adjust question difficulty based on user performance and history.
 - **Stronger analytics**: topic-level insights (strengths/weaknesses), progress trends, and personalized learning plans.
 - **Follow-up questions**: AI-generated follow-ups based on the user’s answer to simulate real interviews.
