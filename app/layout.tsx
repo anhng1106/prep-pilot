@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Prep Pilot – Your Personalized AI Interview Coach",
+  title: "Prep Pilot",
   description: "Your Personalized AI Interview Coach",
 };
 
