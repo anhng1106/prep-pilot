@@ -17,12 +17,13 @@ import {
 import { Icon } from "@iconify/react";
 import { IInterview } from "@/backend/models/interview.model";
 import { Key } from "@react-types/shared";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { deleteInterview } from "@/actions/interview.action";
 import Link from "next/link";
 import { calculateAverageScore } from "@/helpers/interview";
 import CustomPagination from "../layout/pagination/CustomPagination";
+import { isAdminPath } from "@/helpers/auth";
 
 export const columns = [
   { name: "INTERVIEW", uid: "interview" },
@@ -45,6 +46,7 @@ export default function ListInterview({ data }: ListInterviewProps) {
   const { interviews, resPerPage, filteredCount } = data;
 
   const router = useRouter();
+  const pathname = usePathname();
 
   const renderCell = React.useCallback(
     (interview: IInterview, columnKey: Key) => {
@@ -55,7 +57,7 @@ export default function ListInterview({ data }: ListInterviewProps) {
           toast.custom(
             (t) => (
               <div
-                className="fixed inset-0 z-[9999] flex-col-8 flex items-center justify-center px-4"
+                className="fixed inset-0 z-9999 flex-col-8 flex items-center justify-center px-4"
                 style={{ transform: "translateY(35vh)" }}
               >
                 {/* subtle overlay */}
@@ -70,7 +72,7 @@ export default function ListInterview({ data }: ListInterviewProps) {
                 {/* card */}
                 <div
                   className={[
-                    "relative w-[420px] max-w-[92vw]",
+                    "relative w-105 max-w-[92vw]",
                     "rounded-2xl bg-white dark:bg-neutral-900",
                     "border border-default-200/70 dark:border-white/10",
                     "shadow-lg shadow-black/10 dark:shadow-black/40",
@@ -93,7 +95,7 @@ export default function ListInterview({ data }: ListInterviewProps) {
 
                   <div className="mt-5 flex items-center justify-center gap-3">
                     <button
-                      className="min-w-[120px] rounded-xl px-4 py-2 text-sm font-semibold
+                      className="min-w-30 rounded-xl px-4 py-2 text-sm font-semibold
                          bg-default-100 hover:bg-default-200/80 text-foreground
                          border border-default-200/60 transition-colors"
                       onClick={() => {
@@ -105,7 +107,7 @@ export default function ListInterview({ data }: ListInterviewProps) {
                     </button>
 
                     <button
-                      className="min-w-[120px] rounded-xl px-4 py-2 text-sm font-semibold text-white
+                      className="min-w-30 rounded-xl px-4 py-2 text-sm font-semibold text-white
                          bg-danger hover:bg-danger/90 shadow-md shadow-danger/30 transition"
                       onClick={() => {
                         toast.remove(t.id);
@@ -134,7 +136,12 @@ export default function ListInterview({ data }: ListInterviewProps) {
 
         if (res?.deleted) {
           toast.success("An interview has been deleted successfully!");
-          router.refresh();
+
+          if (isAdminPath(pathname)) {
+            router.push("/app/admin/interviews");
+          } else {
+            router.push("/app/interviews");
+          }
         }
       };
 
@@ -173,7 +180,9 @@ export default function ListInterview({ data }: ListInterviewProps) {
         case "actions":
           return (
             <>
-              {interview?.answers === 0 && interview?.status !== "completed" ? (
+              {interview?.answers === 0 &&
+              interview?.status !== "completed" &&
+              !isAdminPath(pathname) ? (
                 <Button
                   className="bg-foreground font-medium text-background w-full hover:bg-foreground/90"
                   color="secondary"
@@ -188,19 +197,36 @@ export default function ListInterview({ data }: ListInterviewProps) {
                 </Button>
               ) : (
                 <div className="relative flex items-center justify-center gap-2">
-                  {interview?.status !== "completed" && (
-                    <Tooltip
-                      color="danger"
-                      content="Continue interview"
-                      placement="top"
-                    >
-                      <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                  {interview?.status !== "completed" &&
+                    !isAdminPath(pathname) && (
+                      <Tooltip
+                        color="danger"
+                        content="Continue interview"
+                        placement="top"
+                      >
+                        <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                          <Icon
+                            icon="solar:round-double-alt-arrow-right-bold"
+                            fontSize={22}
+                            onClick={() =>
+                              router.push(
+                                `/app/interviews/conduct/${interview._id.toString()}`
+                              )
+                            }
+                          />
+                        </span>
+                      </Tooltip>
+                    )}
+
+                  {interview?.status === "completed" && (
+                    <Tooltip content="View Interview Results" placement="top">
+                      <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                         <Icon
-                          icon="solar:round-double-alt-arrow-right-bold"
+                          icon="solar:eye-broken"
                           fontSize={22}
                           onClick={() =>
                             router.push(
-                              `/app/interviews/conduct/${interview._id.toString()}`
+                              `/app/results/${interview._id.toString()}`
                             )
                           }
                         />
@@ -230,7 +256,7 @@ export default function ListInterview({ data }: ListInterviewProps) {
           return cellValue;
       }
     },
-    [router]
+    [router, pathname]
   );
 
   const handleStatusChange = (status: string) => {

@@ -33,3 +33,7 @@ export const isUserSubscribed = (user: IUser): boolean => {
     user?.subscription?.status === "past-due"
   );
 };
+
+export const isAdminPath = (pathname: string): boolean => {
+  return pathname.startsWith("/app/admin") || pathname.startsWith("/admin");
+};

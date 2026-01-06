@@ -72,12 +72,12 @@ export const adminPages = [
   },
   {
     path: "/admin/interviews",
-    title: "Interviews",
+    title: "Interviews Manage",
     breadcrumb: [{ name: "Interviews", path: "/admin/interviews" }],
   },
   {
     path: "/admin/users",
-    title: "Users",
+    title: "Users Manage",
     breadcrumb: [{ name: "Users", path: "/admin/users" }],
   },
 ];
