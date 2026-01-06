@@ -15,9 +15,31 @@ export default withAuth(function proxy(req) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
+  if (url?.startsWith("/admin") && !isAdminUser) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  if (url?.startsWith("/api/admin") && !isAdminUser) {
+    return new NextResponse(
+      JSON.stringify({
+        message: "You are not authorized to access this resource.",
+      }),
+      { status: 401, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
   return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/app/:path*", "/api/interviews/:path*"],
+  matcher: [
+    "/app/:path*",
+    "/admin/:path*",
+    "/subscribe",
+    "/unsubscribe",
+    "/api/interviews/:path*",
+    "/api/admin/:path*",
+    "/api/dashboard/:path*",
+    "/api/invoices/:path*",
+  ],
 };
