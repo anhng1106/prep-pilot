@@ -5,12 +5,11 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white)
 ![HeroUI](https://img.shields.io/badge/HeroUI-000000?logo=vercel&logoColor=white)
+![Iconify](https://img.shields.io/badge/Iconify-1769AA?logo=iconify&logoColor=white)
 ![NextAuth](<https://img.shields.io/badge/Auth.js%20(NextAuth)-000?logo=auth0&logoColor=white>)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
 ![OpenAI](https://img.shields.io/badge/OpenAI-000000?logo=openai&logoColor=white)
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?logo=cloudinary&logoColor=white)
-![Nodemailer]
-![Mailtrap]
 ![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
@@ -47,21 +46,27 @@ Demo Video
 
 https://github.com/user-attachments/assets/9f5cfd17-0457-4986-bb2b-757d508359df
 
-
-
 [↑ Back to Top](#top)
 
 ---
 
 ## Screenshots
 
-|                   **Dashboard**                   |                **Mock Interview**                 |
-| :-----------------------------------------------: | :-----------------------------------------------: |
-| ![Dashboard](docs/media/screenshot-dashboard.png) | ![Mock Interview](docs/media/screenshot-mock.png) |
+|                  **User Dashboard**                  |                  **Mock Interview**                  |
+| :--------------------------------------------------: | :--------------------------------------------------: |
+| ![Dashboard](assets/images/screenshot-dashboard.jpg) | ![Mock Interview](assets/images/screenshot-mock.png) |
 
-|                  **AI Feedback**                   |                  **Profile**                  |
-| :------------------------------------------------: | :-------------------------------------------: |
-| ![AI Feedback](docs/media/screenshot-feedback.png) | ![Profile](docs/media/screenshot-profile.png) |
+|               **Create Interview**                |                    **Invoice List**                     |
+| :-----------------------------------------------: | :-----------------------------------------------------: |
+| ![Dashboard](assets/images/screenshot-create.png) | ![Mock Interview](assets/images/screenshot-invoice.png) |
+
+|                  **Interview List**                  |                    **Result List**                     |
+| :--------------------------------------------------: | :----------------------------------------------------: |
+| ![Dashboard](assets/images/screenshot-interview.png) | ![Mock Interview](assets/images/screenshot-result.png) |
+
+|                    **AI Feedback**                    |              **Admin Dashboard**               |
+| :---------------------------------------------------: | :--------------------------------------------: |
+| ![AI Feedback](assets/images/screenshot-feedback.png) | ![Profile](assets/images/screenshot-admin.png) |
 
 [↑ Back to Top](#top)
 
