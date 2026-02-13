@@ -80,6 +80,7 @@ https://github.com/user-attachments/assets/9f5cfd17-0457-4986-bb2b-757d508359df
 - **Database**: MongoDB
 - **AI**: OpenAI API (server-side)
 - **Media Storage**: Cloudinary
+- **Payments**: Stripe (subscriptions, invoices, webhooks)
 - **Deployment**: Vercel
 
 [↑ Back to Top](#top)
@@ -93,6 +94,7 @@ https://github.com/user-attachments/assets/9f5cfd17-0457-4986-bb2b-757d508359df
 - **Structured Feedback**: strengths, weaknesses, improvements, sample answer hints
 - **Question Bank**: save, tag, favorite, search questions
 - **User Profiles**: progress tracking, streaks (optional)
+- **Subscription Gating + Invoices**: Stripe
 - **Secure Authentication**: NextAuth (email/OAuth provider)
 - **Image Uploads**: Cloudinary integration for avatars (or attachments)
 
@@ -512,7 +514,6 @@ Prep Pilot is deployed on **Vercel**.
 1. Push the project to GitHub.
 2. Go to Vercel → **New Project** → Import `prep-pilot`.
 3. In **Project Settings → Environment Variables**, add all required variables:
-
    - `MONGODB_URI`
    - `NEXTAUTH_URL`
    - `NEXTAUTH_SECRET`
