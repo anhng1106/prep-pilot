@@ -8,7 +8,7 @@ export const getAuthCookieName = () =>
     : "next-auth.session-token";
 
 export const getAuthHeader = (
-  nextCookies: ReadonlyRequestCookies
+  nextCookies: ReadonlyRequestCookies,
 ): RequestInit => {
   const cookieName = getAuthCookieName();
 
@@ -24,7 +24,7 @@ export const getAuthHeader = (
 };
 
 export const isUserAdmin = (user: IUser): boolean => {
-  return user?.roles?.includes("admin");
+  return Boolean(user?.roles?.includes("admin"));
 };
 
 export const isUserSubscribed = (user: IUser): boolean => {

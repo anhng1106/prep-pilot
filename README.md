@@ -30,6 +30,7 @@ An interview preparation web app that helps users practice with AI-generated que
 - [Authentication](#authentication)
 - [AI & Prompting](#ai--prompting)
 - [Media Uploads (Cloudinary)](#media-uploads-cloudinary)
+- [Unit Testing Guide](#unit-testing-guide)
 - [Deployment](#deployment)
 - [Future Improvements](#future-improvements)
 - [Contributing](#contributing)
@@ -81,6 +82,7 @@ https://github.com/user-attachments/assets/9f5cfd17-0457-4986-bb2b-757d508359df
 - **AI**: OpenAI API (server-side)
 - **Media Storage**: Cloudinary
 - **Payments**: Stripe (subscriptions, invoices, webhooks)
+- **Unit Testing**: Vitest
 - **Deployment**: Vercel
 
 [↑ Back to Top](#top)
@@ -115,8 +117,8 @@ https://github.com/user-attachments/assets/9f5cfd17-0457-4986-bb2b-757d508359df
 ### Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
+git clone https://github.com/anhng1106/prep-pilot.git
+cd prep-pilot
 npm install
 npm run dev
 
@@ -494,6 +496,71 @@ CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
+```
+
+</details>
+
+[↑ Back to Top](#top)
+
+---
+
+## Unit Testing Guide
+
+<details>
+<summary>Click to view how to run unit test</summary>
+
+### Setup Instructions
+
+#### Install Testing Dependencies
+
+```bash
+npm install --save-dev vitest @testing-library/react @testing-library/jest-dom jsdom @vitejs/plugin-react
+```
+
+### Running Tests
+
+#### Run All Tests
+
+```bash
+npm test
+```
+
+#### Run Specific Test File
+
+```bash
+npm test -- helpers.test.ts
+```
+
+#### Run Tests in Watch Mode
+
+```bash
+npm test -- --watch
+```
+
+#### Run Tests with UI Dashboard
+
+```bash
+npm run test:ui
+```
+
+#### Generate Coverage Report
+
+```bash
+npm run test:coverage
+```
+
+### Debugging Tests
+
+#### Run Single Test
+
+```bash
+npm test -- --reporter=verbose helpers.test.ts
+```
+
+#### Debug Mode
+
+```bash
+node --inspect-brk ./node_modules/.bin/vitest
 ```
 
 </details>
