@@ -12,9 +12,18 @@ import { useRouter } from "next/navigation";
 export default function Login() {
   const [isVisible, setIsVisible] = React.useState(false);
   const router = useRouter();
+  const emailInputRef = React.useRef<HTMLInputElement>(null);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
+  // Auto-focus to email field when component mount
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      emailInputRef.current?.focus();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
   const { handleSubmit, loading } = useGenericSubmitHandler(async (data) => {
     const res = await signIn("credentials", {
       redirect: false,
@@ -60,12 +69,14 @@ export default function Login() {
           validationBehavior="native"
         >
           <Input
+            ref={emailInputRef}
             isRequired
             label="Email Address"
             name="email"
             placeholder="Enter your email"
             type="email"
             variant="bordered"
+            autoFocus
           />
           <Input
             isRequired

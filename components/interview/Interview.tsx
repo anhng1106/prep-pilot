@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation.js";
 export default function Interview({ interview }: { interview: IInterview }) {
   const router = useRouter();
   const initialQuestionIndex = getFirstIncompleteQuestionIndex(
-    interview?.questions
+    interview?.questions,
   );
   const [currentQuestionIndex, setCurrentQuestionIndex] =
     useState(initialQuestionIndex);
@@ -37,7 +37,7 @@ export default function Interview({ interview }: { interview: IInterview }) {
   useEffect(() => {
     //load saved answers from localStorage
     const storedAnswers = getAllAnswersFromLocalStorage(
-      interview?._id?.toString()
+      interview?._id?.toString(),
     );
 
     if (storedAnswers) {
@@ -48,7 +48,7 @@ export default function Interview({ interview }: { interview: IInterview }) {
           saveAnswerToLocalStorage(
             interview?._id.toString(),
             question._id.toString(),
-            question?.answer || ""
+            question?.answer || "",
           );
         }
       });
@@ -59,7 +59,7 @@ export default function Interview({ interview }: { interview: IInterview }) {
   useEffect(() => {
     const savedAnswer = getAnswerFromLocalStorage(
       interview?._id.toString(),
-      currentQuestion?._id.toString()
+      currentQuestion?._id.toString(),
     );
     setAnswer(savedAnswer || "");
   }, [currentQuestionIndex, currentQuestion?._id, interview?._id]);
@@ -95,13 +95,13 @@ export default function Interview({ interview }: { interview: IInterview }) {
         interview?._id?.toString(),
         timeLeft?.toString(),
         questionId,
-        answer
+        answer,
       );
 
       if (res?.error) {
         setLoading(false);
         return toast.error(
-          res?.error?.message || "Failed to save answer. Please try again."
+          res?.error?.message || "Failed to save answer. Please try again.",
         );
       }
 
@@ -123,7 +123,7 @@ export default function Interview({ interview }: { interview: IInterview }) {
       saveAnswerToLocalStorage(
         interview?._id.toString(),
         currentQuestion._id.toString(),
-        answer
+        answer,
       );
 
       setAllAnswers((prevAnswers) => {
@@ -197,7 +197,7 @@ export default function Interview({ interview }: { interview: IInterview }) {
         timeLeft?.toString(),
         currentQuestion?._id?.toString(),
         answer,
-        true
+        true,
       );
 
       if (res?.error) {
