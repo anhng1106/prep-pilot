@@ -94,9 +94,8 @@ https://github.com/user-attachments/assets/9f5cfd17-0457-4986-bb2b-757d508359df
 - **AI Interview Practice**: generate questions by role/seniority/topic
 - **Mock Interview Sessions**: session-based practice + history
 - **Structured Feedback**: strengths, weaknesses, improvements, sample answer hints
-- **Question Bank**: save, tag, favorite, search questions
-- **User Profiles**: progress tracking, streaks (optional)
-- **Subscription Gating + Invoices**: Stripe
+- **User Profiles**: update username, update profile picture
+- **Subscription Gating + Invoices**: Stripe - buy subscription to use AI interview question generation and download invoice
 - **Secure Authentication**: NextAuth (email/OAuth provider)
 - **Image Uploads**: Cloudinary integration for avatars (or attachments)
 
@@ -201,20 +200,70 @@ This repository follows a feature-oriented Next.js structure with a clear separa
 
 ```txt
 prep-pilot/
-├─ app/                # Next.js App Router (routes, layouts, API routes)
-├─ backend/            # Server-side logic (OpenAI, DB access, helpers)
-├─ components/         # Reusable UI components (HeroUI wrappers, shared UI)
-├─ config/             # App configuration (auth, db, cloudinary, etc.)
-├─ constants/          # App constants (roles, prompts, limits, routes, etc.)
-├─ public/             # Static assets
-├─ actions/            # Project actions/automation scripts (if used)
-├─ middleware.ts       # Next.js middleware (route protection, redirects)
-├─ next.config.ts
-├─ tailwind.config.ts
-├─ postcss.config.mjs
-├─ eslint.config.mjs
-├─ tsconfig.json
-└─ package.json
+├─ __tests__/              # Unit & integration tests (Vitest)
+├─ actions/                # Server actions (auth, interview, payment)
+├─ app/                    # Next.js App Router (routes, layouts, API routes)
+│  ├─ api/                 # API route handlers
+│  ├─ admin/               # Admin dashboard routes
+│  ├─ app/                 # Main application routes (dashboard, interviews, etc.)
+│  ├─ auth/                # Auth-related routes (login, register, password reset)
+│  ├─ subscribe/           # Subscription page
+│  ├─ globals.css          # Global styles
+│  ├─ layout.tsx           # Root layout
+│  ├─ page.tsx             # Home page
+│  ├─ not-found.tsx        # 404 page
+│  └─ providers.tsx        # App providers (Auth, Redux, etc.)
+├─ assets/                 # Static assets (images, guides, docs)
+├─ backend/                # Server-side logic (DB, OpenAI, utilities)
+│  ├─ config/              # Database configuration
+│  ├─ controllers/         # Request handlers (auth, interview, payment)
+│  ├─ middleware/          # Express-like middleware
+│  ├─ models/              # MongoDB schemas
+│  ├─ openai/              # OpenAI integration
+│  ├─ types/               # TypeScript types
+│  └─ utils/               # Helper utilities
+├─ components/             # Reusable UI components
+│  ├─ admin/               # Admin components
+│  ├─ auth/                # Auth components (login, register, etc.)
+│  ├─ dashboard/           # Dashboard components
+│  ├─ interview/           # Interview-related components
+│  ├─ invoices/            # Invoice components
+│  ├─ layout/              # Layout components (header, footer, breadcrumb)
+│  ├─ payment/             # Payment components
+│  ├─ result/              # Result components
+│  ├─ date-picker/         # Date picker components
+│  ├─ form/                # Form utilities
+│  └─ Home.tsx             # Home page component
+├─ config/                 # App configuration
+│  ├─ Logo.tsx             # Logo component
+│  └─ site.ts              # Site configuration
+├─ constants/              # App constants
+│  ├─ constants.ts         # General constants
+│  ├─ data.ts              # Static data
+│  └─ pages.ts             # Page constants
+├─ helpers/                # Helper utilities
+│  ├─ auth.ts              # Auth helpers
+│  ├─ helper.ts            # General helpers
+│  ├─ interview.ts         # Interview helpers
+│  └─ pageTitles.ts        # Page title helpers
+├─ hooks/                  # Custom React hooks
+│  └─ usePageTitle.tsx     # Page title hook
+├─ public/                 # Static assets (images, fonts)
+├─ scripts/                # Utility scripts
+├─ types/                  # Shared TypeScript types
+│  └─ next.d.ts            # Next.js type definitions
+├─ eslint.config.mjs       # ESLint configuration
+├─ hero.ts                 # HeroUI configuration
+├─ next.config.ts          # Next.js configuration
+├─ tailwind.config.ts      # Tailwind CSS configuration
+├─ postcss.config.mjs      # PostCSS configuration
+├─ tsconfig.json           # TypeScript configuration
+├─ vitest.config.ts        # Vitest configuration
+├─ vitest.setup.ts         # Vitest setup
+├─ package.json            # Dependencies & scripts
+├─ proxy.ts                # Proxy configuration
+├─ setup-tests.sh          # Test setup script
+└─ README.md               # This file
 ```
 
 Note: the **app/** folder is the “routing layer” (pages, layouts, API routes).
@@ -226,38 +275,68 @@ The **backend/** folder is the “service layer” (OpenAI, MongoDB, Cloudinary 
 flowchart TB
   Repo[Prep Pilot Repo]
 
-  Repo --> App[app]
-  Repo --> Backend[backend]
-  Repo --> Components[components]
-  Repo --> Config[config]
-  Repo --> Constants[constants]
-  Repo --> Public[public]
-  Repo --> Actions[actions]
+  Repo --> Tests["__tests__"]
+  Repo --> Actions["actions/"]
+  Repo --> App["app/"]
+  Repo --> Assets["assets/"]
+  Repo --> Backend["backend/"]
+  Repo --> Components["components/"]
+  Repo --> Config["config/"]
+  Repo --> Constants["constants/"]
+  Repo --> Helpers["helpers/"]
+  Repo --> Hooks["hooks/"]
+  Repo --> Public["public/"]
+  Repo --> Scripts["scripts/"]
+  Repo --> Types["types/"]
 
-  Repo --> Middleware[middleware.ts]
-  Repo --> NextConfig[next.config.ts]
-  Repo --> TailwindConfig[tailwind.config.ts]
-  Repo --> PackageJson[package.json]
+  Repo --> ConfigFiles["Config Files<br/>next.config.ts<br/>tailwind.config.ts<br/>tsconfig.json<br/>..."]
 
-  App --> AppPages[Pages and Layouts]
-  App --> AppApi[API Route Handlers]
+  Tests --> TestFiles["auth.test.ts<br/>dashboard.test.tsx<br/>..."]
 
-  Components --> UI[UI Components]
-  Components --> Shared[Shared Components]
-  Components --> Features[Feature Components]
+  Actions --> AuthAction["auth.action.ts"]
+  Actions --> InterviewAction["interview.action.ts"]
+  Actions --> PaymentAction["payment.action.ts"]
 
-  Backend --> DB[MongoDB Access]
-  Backend --> AI[OpenAI Service]
-  Backend --> Media[Cloudinary Service]
-  Backend --> Utils[Utilities and Validation]
+  App --> AppApi["api/"]
+  App --> Admin["admin/"]
+  App --> AppRoutes["app/ - main routes"]
+  App --> Auth["auth/ - login, register"]
+  App --> Subscribe["subscribe/"]
+  App --> AppCore["layout.tsx, page.tsx"]
 
-  Config --> AuthCfg[NextAuth Config]
-  Config --> DbCfg[DB Config]
-  Config --> CloudCfg[Cloudinary Config]
+  AppApi --> AdminApi["admin/"]
+  AppApi --> AuthApi["auth/"]
+  AppApi --> DashboardApi["dashboard/"]
+  AppApi --> InterviewApi["interviews/"]
+  AppApi --> PaymentApi["payment/"]
 
-  Constants --> Prompts[Prompt Templates]
-  Constants --> Enums[Enums and Limits]
+  Backend --> DbCfg["config/ - DB Connect"]
+  Backend --> Controllers["controllers/ - auth, interview, payment"]
+  Backend --> Middleware["middleware/"]
+  Backend --> Models["models/ - User, Interview"]
+  Backend --> OpenAI["openai/ - OpenAI integration"]
+  Backend --> BackendTypes["types/"]
+  Backend --> Utils["utils/ - auth, email, stripe, cloudinary"]
 
+  Components --> CompAuth["auth/ - Login, Register, etc."]
+  Components --> Dashboard["dashboard/"]
+  Components --> Interview["interview/"]
+  Components --> Invoices["invoices/"]
+  Components --> Layout["layout/ - Header, Footer, Breadcrumb"]
+  Components --> Payment["payment/"]
+  Components --> Result["result/"]
+
+  Helpers --> AuthHelper["auth.ts"]
+  Helpers --> InterviewHelper["interview.ts"]
+  Helpers --> GeneralHelper["helper.ts, pageTitles.ts"]
+
+  Hooks --> PageTitleHook["usePageTitle.tsx"]
+
+  Constants --> GeneralConst["constants.ts"]
+  Constants --> DataConst["data.ts"]
+  Constants --> PagesConst["pages.ts"]
+
+  Types --> NextTypes["next.d.ts"]
 ```
 
 </details>
@@ -303,14 +382,36 @@ Prep Pilot is a Next.js interview practice app using NextAuth (Google/GitHub/Cre
 - Cloudinary returns an asset URL
 - The app stores the URL in **MongoDB** and displays it in the UI
 
+### 6) Payment & Subscription (Stripe)
+
+- User initiates subscription purchase on the subscribe page
+- Client sends payment request to **Stripe**
+- Stripe processes the payment and returns a checkout session
+- Upon success, user subscription is recorded in **MongoDB**
+- User can download invoices from their dashboard
+- Webhook handlers verify payment events from **Stripe**
+
+### 7) View Results & History
+
+- Users can access their dashboard to view past interview sessions
+- Each session displays questions answered, feedback received, and scores
+- Interview history is retrieved from **MongoDB** and displayed in the UI
+
+### Admin Features
+
+- **Admin Dashboard**: view user statistics, manage users, view all interviews
+- **User Management**: track subscriptions, view user activity
+- All admin operations are protected and logged in **MongoDB**
+
 ### Data Stored (Conceptual)
 
-- **User**: auth provider ids, profile info, avatar URL
+- **User**: auth provider ids, profile info, avatar URL, subscription status, subscription start date
 - **Session**: userId, role/topic/level, timestamps, summary/score (optional)
 - **Question**: sessionId, content, tags/difficulty (optional)
 - **Answer**: questionId, user response, timestamps
 - **Feedback**: answerId, rubric scores, suggestions
 - **Asset**: userId/sessionId, cloudinary URL, type (optional)
+- **Invoice**: userId, subscription id, amount, status, download URL
 
 ### High-level Flow
 
@@ -324,37 +425,68 @@ sequenceDiagram
   participant DB as MongoDB
   participant OAI as OpenAI
   participant CLD as Cloudinary
+  participant STR as Stripe
 
   U->>N: Open app / dashboard
   U->>A: Sign in (Google/GitHub/Credentials)
-  A-->>N: Session established
+  A-->>N: Session established & redirect to dashboard
+
+  U->>N: Setup / Update Profile (optional)
+  N->>API: Update profile request
+  API->>DB: Update User document
+  DB-->>API: Profile updated
+
+  U->>N: Upload avatar/profile picture (optional)
+  N->>API: Request upload signature
+  API->>CLD: Generate upload signature
+  CLD-->>API: Signature returned
+  API-->>N: Send signature to client
+  U->>CLD: Upload file with signature
+  CLD-->>API: Webhook - file uploaded
+  API->>DB: Save avatar URL to User
+  API-->>N: Avatar updated in UI
+
+  U->>N: Buy subscription (optional)
+  N->>API: Create checkout session
+  API->>STR: Request checkout URL
+  STR-->>API: Checkout URL
+  API-->>N: Redirect to Stripe
+  U->>STR: Complete payment
+  STR-->>API: Webhook - payment success
+  API->>DB: Save subscription + Invoice to User
+  API-->>N: Subscription activated & invoice saved
 
   U->>N: Start a mock interview
-  N->>API: Create session request
+  N->>API: Create session request (with role/topic/level)
   API->>DB: Create Session document
   DB-->>API: Session created
-  API-->>N: Session id returned
+  API-->>N: Session id returned & interview interface loaded
 
   U->>N: Request interview questions
-  N->>API: Generate questions (role/topic/level)
-  API->>OAI: Create questions
-  OAI-->>API: Questions list
-  API->>DB: Save Questions
-  API-->>N: Return questions
+  N->>API: Generate questions request
+  API->>OAI: Call OpenAI API (create questions)
+  OAI-->>API: Questions list with content
+  API->>DB: Save Questions to Session
+  API-->>N: Return questions to UI
 
-  U->>N: Submit answers
-  N->>API: Evaluate answers
-  API->>OAI: Generate feedback (rubric)
-  OAI-->>API: Feedback (strengths, gaps, suggestions)
-  API->>DB: Save Answers + Feedback
-  API-->>N: Show feedback + summary
+  U->>N: Answer questions during interview
+  N->>API: Submit answers
+  API->>OAI: Generate feedback (send answers + rubric)
+  OAI-->>API: Feedback (strengths, weaknesses, suggestions)
+  API->>DB: Save Answers + Feedback to Session
+  API-->>N: Show feedback & performance summary
 
-  U->>N: Upload avatar/attachments (optional)
-  N->>API: Request upload/signature (if used)
-  API->>CLD: Upload or sign
-  CLD-->>API: Asset URL
-  API->>DB: Save asset URL to user/session
-  API-->>N: Display media
+  U->>N: View interview results & history
+  N->>API: Fetch user sessions / results
+  API->>DB: Query Sessions & Answers with Feedback
+  DB-->>API: All interview data retrieved
+  API-->>N: Display interview history, scores, feedback
+
+  U->>N: Download invoices (optional)
+  N->>API: Fetch user invoices
+  API->>DB: Query Invoice documents
+  DB-->>API: Invoices retrieved
+  API-->>N: Display invoice list with download links
 ```
 
 </details>
@@ -368,27 +500,47 @@ sequenceDiagram
 <details>
 <summary>Click to view the authentication flow — from sign in to secured access.</summary>
 
-Prep Pilot uses **NextAuth** to support multiple sign-in methods:
+Prep Pilot uses **NextAuth (Auth.js)** to support multiple sign-in methods:
 
-- **Google OAuth**
-- **GitHub OAuth**
-- **Credentials** (email + password)
+- **Google OAuth** - Sign in with Google account
+- **GitHub OAuth** - Sign in with GitHub account
+- **Credentials** (email + password) - Register and sign in with email/password
 
 ### How authentication works
 
-1. The user signs in via Google/GitHub or enters credentials.
-2. NextAuth creates a secure session (cookie/JWT depending on your config).
-3. Protected pages and API routes verify the session before returning data.
+1. **Sign In**: User signs in via Google/GitHub or registers with credentials.
+2. **Session Creation**: NextAuth creates a secure JWT-based session stored in a cookie.
+3. **Database Sync**:
+   - For credentials: User password is verified via bcrypt
+   - For OAuth: User is created in MongoDB if new, or linked to existing account
+4. **Protected Access**: API routes and server components verify the session before returning data.
+5. **Subscription Tracking**: User subscription status is included in the session token for quick access.
 
 ### Auth routes
 
-- NextAuth handler: `app/api/auth/[...nextauth]/route.ts`
+- **NextAuth handler**: `app/api/auth/[...nextauth]/route.ts`
+- **Custom login page**: `app/login/page.tsx`
+- **Register page**: `app/register/page.tsx`
+- **Password reset**: `app/password/forgot/page.tsx` and `app/password/reset/page.tsx`
 
-### Protected routes
+### OAuth Integration
 
-- Route protection can be handled via:
-  - `middleware.ts` (redirect unauthenticated users)
-  - server checks (e.g., `getServerSession()` in server components / route handlers)
+When users sign in with Google/GitHub:
+
+- NextAuth checks if user exists in MongoDB by email
+- If **new user**: Creates a new user document with OAuth provider info
+- If **existing user**: Links the OAuth provider to their account (supports multiple auth methods)
+- Profile picture is fetched from OAuth provider and stored if user doesn't have one
+
+### Protected pages and API routes
+
+Authentication is checked at multiple layers:
+
+- **API routes**: Controllers validate session tokens passed via `Cookie` header
+- **Server components**: Use `getAuthHeader()` helper to pass session tokens to API calls
+- **Client side**: Components use `useSession()` hook to check authentication status and redirect to login if needed
+- **Admin routes**: Additional role checks via `isUserAdmin()` helper to verify user has `admin` role
+- **Subscription routes**: Checks via `isUserSubscribed()` helper for subscription-gated features
 
 ### Required environment variables
 
@@ -402,6 +554,16 @@ GOOGLE_CLIENT_SECRET=...
 GITHUB_CLIENT_ID=...
 GITHUB_CLIENT_SECRET=...
 ```
+
+### Session data structure
+
+The session token includes:
+
+- User ID, name, email
+- Profile picture URL
+- Auth provider(s) linked to account
+- Subscription status (active/past-due/inactive)
+- User roles (for admin access)
 
 </details>
 
@@ -458,7 +620,7 @@ Results are stored in MongoDB and shown on the dashboard for tracking progress o
 
 AI features can be gated behind a **Stripe monthly subscription**:
 
-- Free users may have limited interview generations or limited analyses.
+- Free users can't access to interview generations and answers analyses.
 - Subscribed users unlock full mock interview creation and detailed AI analysis.
 - Billing and invoices are handled through Stripe and exposed in the user dashboard.
 
@@ -477,11 +639,11 @@ AI features can be gated behind a **Stripe monthly subscription**:
 <details>
 <summary>Click to view how Media Uploads (Cloudinary) setup</summary>
 
-Prep Pilot uses **Cloudinary** to handle media uploads such as user avatars and optional interview-related attachments.
+Prep Pilot uses **Cloudinary** to handle media uploads such as user avatars.
 
 ### Upload flow
 
-1. User selects an image/file in the UI.
+1. User selects an image in the UI.
 2. The app uploads the file to **Cloudinary** (server-side upload or client upload depending on implementation).
 3. Cloudinary returns a secure URL.
 4. The URL is saved in **MongoDB** and used to display the media in the app.
